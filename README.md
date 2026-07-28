@@ -44,8 +44,8 @@ Whether you are looking to architect a decoupled web application from scratch or
 *   **Entrepreneurs & Startups:** Let's validate, build, and scale your MVP.
 *   **Established Brands:** Upgrade your legacy systems to modern, high-speed architectures and dominate your SEO rankings.
 
-📫 **Reach out to us:** [Insert Email Address]  
-🌐 **Learn more:** [Insert Website URL]  
+📫 **Reach out to us:** info@brandcraftsman.in
+🌐 **Learn more:** https://brandcraftsman.in 
 📍 **Headquarters:** Coimbatore, Tamil Nadu, India
 
 ---
