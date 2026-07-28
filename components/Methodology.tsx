@@ -13,25 +13,29 @@ const steps = [
     title: "Discovery & Strategy",
     description: "Every project starts with a deep dive. We sit down with you to understand your market, your competitors, and your long-term goals. We do not write a single line of code or sketch a single logo until we have a bulletproof strategy.",
     icon: <FiSearch className="text-2xl" />,
-    colorClass: "bg-purple-500 border-purple-400 text-white shadow-[0_0_25px_rgba(168,85,247,0.6)]"
+    color: "#a855f7", // purple-500
+    shadow: "0 0 25px rgba(168,85,247,0.6)"
   },
   {
     title: "Development & Execution",
     description: "Our developers, writers, and designers get to work. We use agile development methodologies, providing you with regular updates and staging links so you can watch your project come to life in real time.",
     icon: <FiCode className="text-2xl" />,
-    colorClass: "bg-blue-500 border-blue-400 text-white shadow-[0_0_25px_rgba(59,130,246,0.6)]"
+    color: "#3b82f6", // blue-500
+    shadow: "0 0 25px rgba(59,130,246,0.6)"
   },
   {
     title: "Testing & Optimization",
     description: "Before anything goes live, it passes through rigorous Quality Assurance. We test for cross-browser compatibility, mobile responsiveness, security vulnerabilities, and page speed. We ensure perfection.",
     icon: <FiCheckCircle className="text-2xl" />,
-    colorClass: "bg-green-500 border-green-400 text-white shadow-[0_0_25px_rgba(34,197,94,0.6)]"
+    color: "#22c55e", // green-500
+    shadow: "0 0 25px rgba(34,197,94,0.6)"
   },
   {
     title: "Launch & Scale",
     description: "We handle the deployment smoothly. But launch day is just the beginning. Through our partnership with Search Pin, we immediately pivot to scaling your brand through aggressive digital marketing and continuous technical support.",
     icon: <FiTrendingUp className="text-2xl" />,
-    colorClass: "bg-orange-500 border-orange-400 text-white shadow-[0_0_25px_rgba(249,115,22,0.6)]"
+    color: "#f97316", // orange-500
+    shadow: "0 0 25px rgba(249,115,22,0.6)"
   }
 ];
 
@@ -72,15 +76,14 @@ const Methodology = () => {
     const stepElements = gsap.utils.toArray<HTMLElement>(".methodology-icon");
     stepElements.forEach((step, index) => {
       const stepData = steps[index];
-      const classesToToggle = stepData.colorClass.split(" ");
       
       ScrollTrigger.create({
         trigger: step,
         start: "top 90%",
-        onEnter: () => step.classList.add(...classesToToggle),
-        onLeave: () => step.classList.add(...classesToToggle),
-        onEnterBack: () => step.classList.add(...classesToToggle),
-        onLeaveBack: () => step.classList.add(...classesToToggle),
+        onEnter: () => gsap.to(step, { backgroundColor: stepData.color, borderColor: stepData.color, color: "white", boxShadow: stepData.shadow, duration: 0.5 }),
+        onLeave: () => gsap.to(step, { backgroundColor: stepData.color, borderColor: stepData.color, color: "white", boxShadow: stepData.shadow, duration: 0.5 }),
+        onEnterBack: () => gsap.to(step, { backgroundColor: stepData.color, borderColor: stepData.color, color: "white", boxShadow: stepData.shadow, duration: 0.5 }),
+        onLeaveBack: () => gsap.to(step, { clearProps: "all", duration: 0.5 }),
       });
     });
 
@@ -131,16 +134,13 @@ const Methodology = () => {
 
                   {/* Content Card */}
                   <div className="w-full pl-16 sm:pl-24 md:pl-0 md:w-5/12">
-                    <div className="p-6 md:p-8 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl hover:border-blue-500/30 transition-all duration-300 shadow-sm hover:shadow-md">
-                      <span className="font-zentry text-6xl text-blue-500/10 absolute -top-4 -right-2 font-black pointer-events-none">
-                        0{index + 1}
-                      </span>
-
-                      {/* Header with Icon Badge */}
+                    <div className="p-6 md:p-8 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl hover:border-blue-500/30 transition-all duration-300 shadow-sm hover:shadow-md relative">
+                      
+                      {/* Header with Icon Badge & Number */}
                       <div className="flex items-center gap-3 mb-3 relative z-10">
-                        <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500 text-xl md:hidden">
-                          {step.icon}
-                        </div>
+                        <span className="font-zentry text-4xl sm:text-5xl font-black text-blue-500 mr-2">
+                          0{index + 1}.
+                        </span>
                         <h3 className="font-zentry text-2xl font-bold uppercase text-black dark:text-white">
                           {step.title}
                         </h3>

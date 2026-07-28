@@ -2,7 +2,7 @@ import React from "react";
 import Footer from "@/components/Footer";
 import ServicesBento from "@/components/ServicesBento";
 import FAQ from "@/components/FAQ";
-import { FiCheck, FiStar, FiTrendingUp, FiCheckCircle, FiShield, FiPhoneCall } from "react-icons/fi";
+import { FiStar, FiCheckCircle, FiPhoneCall } from "react-icons/fi";
 
 export const metadata = {
   title: "Web Design & Digital Marketing Company in Coimbatore | Brand Craftsman",
@@ -74,13 +74,13 @@ export default function PrimaryKeywordLandingPage() {
             </h2>
             <div className="font-robert-regular text-gray-700 dark:text-gray-300 space-y-4 text-base leading-relaxed">
               <p>
-                In today's digital-first economy, simply having a website is no longer sufficient. You need a dedicated, high-speed digital sales platform backed by strategic search engine optimization, performance advertising, and unified visual branding.
+                In today&apos;s digital-first economy, simply having a website is no longer sufficient. You need a dedicated, high-speed digital sales platform backed by strategic search engine optimization, performance advertising, and unified visual branding.
               </p>
               <p>
                 As the top <strong>Web Design & Digital Marketing Company in Coimbatore</strong>, Brand Craftsman bridges the crucial gap between aesthetic web design and ROI-centric digital marketing campaigns. Founded by Santhosh Shanmugasundaram and Hari Prashath, our agency brings 7+ years of hands-on field experience building bespoke digital infrastructure for regional, national, and international clients.
               </p>
               <p>
-                Our strategic synergy with <strong>Search Pin</strong> (our dedicated digital marketing arm established in 2024) ensures that your web application isn't just visual eye candy—it is engineered to rank #1 on Google, capture high-intent organic traffic, and convert visitors into high-paying customers.
+                Our strategic synergy with <strong>Search Pin</strong> (our dedicated digital marketing arm established in 2024) ensures that your web application isn&apos;t just visual eye candy—it is engineered to rank #1 on Google, capture high-intent organic traffic, and convert visitors into high-paying customers.
               </p>
             </div>
           </div>

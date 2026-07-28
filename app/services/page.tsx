@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "@/components/Footer";
 import ServicesBento from "@/components/ServicesBento";
-import { FiArrowRight, FiCheckCircle, FiZap, FiLayers } from "react-icons/fi";
+import { FiArrowRight, FiLayers } from "react-icons/fi";
 
 export const metadata = {
   title: "Our Services | Brand Craftsman - Web Design & Digital Marketing Company in Coimbatore",

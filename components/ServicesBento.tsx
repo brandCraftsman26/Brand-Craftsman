@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import React, { useRef } from "react";
 import { FiMonitor, FiSmartphone, FiTrendingUp, FiPrinter, FiTv, FiMessageSquare, FiFeather, FiShare2 } from "react-icons/fi";
@@ -131,9 +132,10 @@ const BentoCard = ({ service }: { service: typeof services[0] }) => {
       style={{ opacity: 0, transform: "translateY(40px)" }}
     >
       {/* 1. Relative Background Image */}
-      <img
+      <Image
         src={service.bgImage}
         alt={service.title}
+        fill
         className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
       />
 
@@ -154,14 +156,14 @@ const BentoCard = ({ service }: { service: typeof services[0] }) => {
 
       {/* Content Container */}
       <div className="relative z-10 h-full flex flex-col justify-between">
-        <div>
+        <div className="relative bg-black/30 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
           <div className={service.iconColor}>
             {service.icon}
           </div>
           <h3 className="font-zentry text-2xl font-bold uppercase text-white mb-2.5 tracking-wide group-hover:text-white transition-colors drop-shadow-md">
             {service.title}
           </h3>
-          <p className="font-robert-regular text-gray-200 text-sm mb-4 leading-relaxed drop-shadow-sm">
+          <p className="font-robert-regular text-gray-200 text-sm mb-4 leading-relaxed drop-shadow-sm break-words">
             {service.description}
           </p>
         </div>

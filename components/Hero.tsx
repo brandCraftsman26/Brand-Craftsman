@@ -1,54 +1,23 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 import { TiLocationArrow } from "react-icons/ti";
-import { useRef, useState } from "react";
-
 import Button from "./Button";
-import VideoPreview from "./VideoPreview";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [hasClicked, setHasClicked] = useState(false);
-  const totalVideos = 2;
-  const nextVdRef = useRef<HTMLVideoElement>(null);
+  const [currentVideo, setCurrentVideo] = useState(1);
 
-  const handleMiniVdClick = () => {
-    setHasClicked(true);
-
-    setCurrentIndex((prevIndex) => (prevIndex % totalVideos) + 1);
-  };
-
-  useGSAP(
-    () => {
-      if (hasClicked) {
-        gsap.set("#next-video", { visibility: "visible" });
-        gsap.to("#next-video", {
-          transformOrigin: "center center",
-          scale: 1,
-          width: "100%",
-          height: "100%",
-          duration: 1,
-          ease: "power1.inOut",
-          onStart: () => nextVdRef.current?.play(),
-        });
-        gsap.from("#current-video", {
-          transformOrigin: "center center",
-          scale: 0,
-          duration: 1.5,
-          ease: "power1.inOut",
-        });
-      }
-    },
-    {
-      dependencies: [currentIndex],
-      revertOnUpdate: true,
-    }
-  );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentVideo((prev) => (prev === 1 ? 2 : 1));
+    }, 10000); // 10 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   useGSAP(() => {
     gsap.set("#video-frame", {
@@ -68,53 +37,31 @@ const Hero = () => {
     });
   });
 
-  const getVideoSrc = (index: number) => `videos/brand-hero-${index}.mp4`;
-
   return (
     <div className="relative h-dvh w-full overflow-x-hidden">      <div
         id="video-frame"
         className="relative z-10 h-dvh w-full overflow-hidden rounded-lg bg-blue-75"
       >
-        <div>
-          <div className="mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
-            <VideoPreview>
-              <div
-                onClick={handleMiniVdClick}
-                className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100"
-              >
-                  <video
-                  ref={nextVdRef}
-                  src={getVideoSrc((currentIndex % totalVideos) + 1)}
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  id="current-video"
-                  className="size-64 origin-center scale-150 object-cover object-center"
-                />
-              </div>
-            </VideoPreview>
-          </div>
-
+        <div className="absolute left-0 top-0 size-full">
           <video
-            ref={nextVdRef}
-            src={getVideoSrc(currentIndex)}
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            id="next-video"
-            className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
-          />
-          <video
-            src={getVideoSrc(
-              currentIndex === totalVideos - 1 ? 1 : currentIndex
-            )}
+            src="videos/brand-hero-1.mp4"
             autoPlay
             loop
             muted
             playsInline
-            className="absolute left-0 top-0 size-full object-cover object-center"
+            className={`absolute left-0 top-0 size-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+              currentVideo === 1 ? "opacity-100" : "opacity-0"
+            }`}
+          />
+          <video
+            src="videos/brand-hero-2.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className={`absolute left-0 top-0 size-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+              currentVideo === 2 ? "opacity-100" : "opacity-0"
+            }`}
           />
         </div>
 

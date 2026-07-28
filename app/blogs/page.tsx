@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "@/components/Footer";
-import { FiBookOpen, FiArrowRight, FiClock, FiTag } from "react-icons/fi";
+import { FiBookOpen, FiArrowRight, FiClock } from "react-icons/fi";
 
 export const metadata = {
   title: "Blogs & Insights | Brand Craftsman - Web Design & Digital Marketing in Coimbatore",

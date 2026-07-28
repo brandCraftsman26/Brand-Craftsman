@@ -1,5 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FiTrendingUp, FiCheckCircle, FiArrowLeft, FiZap } from "react-icons/fi";
 
@@ -82,9 +83,9 @@ export default async function PortfolioDetailPage({ params }: PageProps) {
       
       {/* Header */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pt-10 pb-12">
-        <a href="/portfolios" className="inline-flex items-center gap-2 text-sm font-general text-pink-500 mb-6 hover:underline">
+        <Link href="/portfolios" className="inline-flex items-center gap-2 text-sm font-general text-pink-500 mb-6 hover:underline">
           <FiArrowLeft /> Back to all case studies
-        </a>
+        </Link>
 
         <div className="flex items-center gap-4 text-xs font-general text-gray-500 mb-4">
           <span className="bg-pink-500/10 text-pink-600 dark:text-pink-400 px-3 py-1 rounded-full font-bold uppercase tracking-wider">

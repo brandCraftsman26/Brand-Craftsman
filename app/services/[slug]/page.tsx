@@ -1,7 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
-import { FiCheckCircle, FiStar, FiZap, FiArrowRight, FiShield, FiTrendingUp } from "react-icons/fi";
+import { FiCheckCircle, FiStar, FiZap } from "react-icons/fi";
 
 interface ServiceData {
   slug: string;

@@ -26,7 +26,7 @@ export default function ContactPage() {
       {/* Contact Hero Header */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-10 pb-16 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-general text-xs uppercase tracking-widest border border-blue-500/20">
-          <FiMessageSquare /> Let's Build Your Legacy
+          <FiMessageSquare /> Let&apos;s Build Your Legacy
         </div>
 
         <h1 className="font-zentry text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-6">

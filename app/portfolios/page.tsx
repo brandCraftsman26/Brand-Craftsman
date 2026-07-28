@@ -49,7 +49,7 @@ export default function PortfoliosPage() {
         </h1>
 
         <p className="font-robert-regular text-lg sm:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          We don't just design attractive platforms; we engineer measurable business outcomes. Explore how our omnichannel approach drives real growth.
+          We don&apos;t just design attractive platforms; we engineer measurable business outcomes. Explore how our omnichannel approach drives real growth.
         </p>
       </section>
 

@@ -30,6 +30,8 @@ const faqs = [
   }
 ];
 
+import Image from "next/image";
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -37,8 +39,10 @@ export default function AboutPage() {
       {/* Hero Banner with Founders Image */}
       <section className="relative w-full h-[85vh] md:h-[95vh] overflow-hidden flex items-end">
         {/* Background Image */}
-        <img
+        <Image
           src="/img/founders-hero.png"
+          width={1920}
+          height={1080}
           alt="Brand Craftsman Founders Santhosh Shanmugasundaram and Hari Prashath collaborating at a high-tech computer workstation"
           className="absolute inset-0 w-full h-full object-cover object-center"
           loading="eager"
@@ -156,7 +160,7 @@ export default function AboutPage() {
               </div>
             </div>
             <p className="font-robert-regular text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base">
-              Santhosh is the technical and creative leader behind the agency. With a unique background that spans from hands-on industrial precision to complex, multi-layered digital architecture, Santhosh understands how things are built—both in the physical world and the digital domain. His expertise rests in developing seamless, high-performance web architectures (including advanced headless setups and modern frontend frameworks) and pairing them with stunning, cinematic visual identities. He makes certain that your brand doesn't just look world-class, but operates perfectly across every device and platform.
+              Santhosh is the technical and creative leader behind the agency. With a unique background that spans from hands-on industrial precision to complex, multi-layered digital architecture, Santhosh understands how things are built—both in the physical world and the digital domain. His expertise rests in developing seamless, high-performance web architectures (including advanced headless setups and modern frontend frameworks) and pairing them with stunning, cinematic visual identities. He makes certain that your brand doesn&apos;t just look world-class, but operates perfectly across every device and platform.
             </p>
           </div>
 
@@ -278,7 +282,7 @@ export default function AboutPage() {
               For example, during the recent collegiate break, we conducted intensive workshops in frontend web development and digital marketing. <strong>Over 60% of participants secured internships or freelance projects within two months.</strong> By dedicating time and resources, especially during school and college holidays, we train students and job seekers with industry-relevant skills like UI/UX design and digital marketing strategy.
             </p>
             <p>
-              By closing the educational gap, we cultivate more competitive candidates for the workforce and make a direct, measurable impact on our community through CSR initiatives. When you partner with Brand Craftsman, you play an active role in a CSR-driven ecosystem that upskills local youth and contributes to Coimbatore's sustainable economic development.
+              By closing the educational gap, we cultivate more competitive candidates for the workforce and make a direct, measurable impact on our community through CSR initiatives. When you partner with Brand Craftsman, you play an active role in a CSR-driven ecosystem that upskills local youth and contributes to Coimbatore&apos;s sustainable economic development.
             </p>
           </div>
         </div>
@@ -312,7 +316,7 @@ export default function AboutPage() {
           <div className="p-8 bg-gray-50 dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800">
             <h4 className="font-zentry text-2xl font-bold uppercase text-amber-500 mb-3">Future-Proofing</h4>
             <p className="font-robert-regular text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base">
-              We build with the future in mind. Whether it's making sure your website architecture can handle sudden viral traffic or designing a logo that will still look modern in a decade, we engineer assets that appreciate in value.
+              We build with the future in mind. Whether it&apos;s making sure your website architecture can handle sudden viral traffic or designing a logo that will still look modern in a decade, we engineer assets that appreciate in value.
             </p>
           </div>
         </div>
@@ -345,7 +349,7 @@ export default function AboutPage() {
       <section className="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto py-16 text-center">
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-10 sm:p-16 rounded-3xl shadow-2xl space-y-6">
           <h4 className="font-zentry text-3xl sm:text-5xl font-black uppercase">
-            The Next Step: Let's Build Your Legacy
+            The Next Step: Let&apos;s Build Your Legacy
           </h4>
           <p className="font-robert-regular text-lg text-blue-100 max-w-3xl mx-auto leading-relaxed">
             Your brand is the most valuable source your company will ever own. Take a decisive step toward long-term success by partnering with experts who understand how to build, scale, and dominate in today’s competitive environment.

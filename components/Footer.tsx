@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
@@ -49,13 +50,13 @@ const Footer = () => {
 
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-300 dark:border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex flex-wrap justify-center md:justify-start gap-6 font-general text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400">
-          <a href="/" className="hover:text-blue-500 transition-colors">Home</a>
-          <a href="/about" className="hover:text-blue-500 transition-colors">About Us</a>
-          <a href="/services" className="hover:text-blue-500 transition-colors">Services</a>
-          <a href="/web-design-digital-marketing-company-in-coimbatore" className="hover:text-blue-500 transition-colors text-blue-600 dark:text-blue-400 font-bold">Landing Page</a>
-          <a href="/blogs" className="hover:text-blue-500 transition-colors">Blogs</a>
-          <a href="/portfolios" className="hover:text-blue-500 transition-colors">Portfolios</a>
-          <a href="/contact" className="hover:text-blue-500 transition-colors">Contact Us</a>
+          <Link href="/" className="hover:text-blue-500 transition-colors">Home</Link>
+          <Link href="/about" className="hover:text-blue-500 transition-colors">About Us</Link>
+          <Link href="/services" className="hover:text-blue-500 transition-colors">Services</Link>
+          <Link href="/web-design-digital-marketing-company-in-coimbatore" className="hover:text-blue-500 transition-colors text-blue-600 dark:text-blue-400 font-bold">Landing Page</Link>
+          <Link href="/blogs" className="hover:text-blue-500 transition-colors">Blogs</Link>
+          <Link href="/portfolios" className="hover:text-blue-500 transition-colors">Portfolios</Link>
+          <Link href="/contact" className="hover:text-blue-500 transition-colors">Contact Us</Link>
         </div>
 
         <p className="font-general text-sm text-gray-500 dark:text-gray-400">
