@@ -128,7 +128,7 @@ const BentoCard = ({ service }: { service: typeof services[0] }) => {
   return (
     <a
       href={`/services/${service.slug}`}
-      className={`bento-item group relative overflow-hidden rounded-3xl border border-white/15 p-7 shadow-xl transition-all duration-500 hover:scale-[1.02] hover:border-white/40 ${service.glowColor} hover:shadow-2xl ${service.className}`}
+      className={`bento-item min-h-[340px] group relative overflow-hidden rounded-3xl border border-white/15 p-7 shadow-xl transition-all duration-500 hover:scale-[1.02] hover:border-white/40 ${service.glowColor} hover:shadow-2xl ${service.className}`}
       style={{ opacity: 0, transform: "translateY(40px)" }}
     >
       {/* 1. Relative Background Image */}
@@ -220,7 +220,7 @@ const ServicesBento = () => {
         </div>
 
         {/* Perfectly Aligned Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[340px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <BentoCard key={service.id} service={service} />
           ))}

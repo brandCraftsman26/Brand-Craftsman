@@ -1,10 +1,14 @@
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
 import LogoSlider from "@/components/LogoSlider";
 import About from "@/components/About";
-import ServicesBento from "@/components/ServicesBento";
-import Methodology from "@/components/Methodology";
-import FAQ from "@/components/FAQ";
-import Footer from "@/components/Footer";
+
+// Dynamically import heavy/below-the-fold components for better performance
+const ServicesBento = dynamic(() => import("@/components/ServicesBento"), { ssr: true });
+const Pricing = dynamic(() => import("@/components/Pricing"), { ssr: true });
+const Methodology = dynamic(() => import("@/components/Methodology"), { ssr: true });
+const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: true });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
 
 export default function Home() {
   return (
@@ -13,6 +17,7 @@ export default function Home() {
       <LogoSlider />
       <About />
       <ServicesBento />
+      <Pricing />
       <Methodology />
       <FAQ />
       <Footer />
