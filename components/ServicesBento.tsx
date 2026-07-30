@@ -136,6 +136,7 @@ const BentoCard = ({ service }: { service: typeof services[0] }) => {
         src={service.bgImage}
         alt={service.title}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
       />
 

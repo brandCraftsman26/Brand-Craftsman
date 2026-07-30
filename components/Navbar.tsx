@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { useWindowScroll } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { FiChevronDown, FiMenu, FiX, FiHome, FiInfo, FiBriefcase, FiImage, FiFileText, FiPhone } from "react-icons/fi";
@@ -43,13 +44,16 @@ const NavBar = () => {
 
   const navContainerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
+  const pathname = usePathname();
 
   const { y: currentScrollY } = useWindowScroll();
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
   
-  const isAtTop = currentScrollY === 0;
+  const hasDarkHero = pathname === '/' || pathname === '/about';
+  const isAtTop = !mounted || currentScrollY === 0;
+  const isTransparentAtTop = hasDarkHero && isAtTop;
 
   useEffect(() => {
     setMounted(true);
@@ -89,7 +93,7 @@ const NavBar = () => {
       >
       <header className={clsx(
         "absolute top-1/2 w-full -translate-y-1/2 rounded-2xl backdrop-blur-lg border shadow-lg transition-all duration-300",
-        isAtTop 
+        isTransparentAtTop 
           ? "bg-white/10 dark:bg-black/20 border-white/20 dark:border-white/10" 
           : "bg-white/80 dark:bg-black/80 border-gray-200 dark:border-white/10"
       )}>
@@ -97,13 +101,11 @@ const NavBar = () => {
           <div className="flex items-center gap-7">
             {/* Logo handles dark mode swapping if mounted */}
             <Link href="/" className="cursor-pointer">
-              {mounted && (
-                <img
-                  src={(!mounted || isAtTop || resolvedTheme === "dark") ? "/img/logo-dark.png" : "/img/logo-light.png"}
-                  alt="Brand Craftsman Logo"
-                  className="w-48 object-contain transition-opacity duration-300"
-                />
-              )}
+              <img
+                src={(mounted && !isTransparentAtTop && resolvedTheme === "light") ? "/img/logo-light.png" : "/img/logo-dark.png"}
+                alt="Brand Craftsman Logo"
+                className="w-48 object-contain transition-opacity duration-300"
+              />
             </Link>
             
             {/* Services Dropdown */}
@@ -118,6 +120,7 @@ const NavBar = () => {
                   title="Services"
                   rightIcon={<FiChevronDown className={clsx("transition-transform duration-300", { "rotate-180": isServicesOpen })} />}
                   containerClass="bg-blue-50 flex items-center justify-center gap-1 !py-2 !px-4"
+                  isLinkWrapper
                 />
               </Link>
               
@@ -152,7 +155,7 @@ const NavBar = () => {
                   key={index}
                   href={item.href}
                   className={clsx("nav-hover-btn transition-colors", 
-                    isAtTop ? "text-blue-50" : "text-black dark:text-blue-50"
+                    isTransparentAtTop ? "text-blue-50" : "text-black dark:text-blue-50"
                   )}
                 >
                   {item.name}
@@ -162,7 +165,7 @@ const NavBar = () => {
 
             {/* Social Icons */}
             <div className={clsx("ml-10 hidden items-center gap-4 sm:flex transition-colors",
-              isAtTop ? "text-blue-50 dark:text-white" : "text-black dark:text-white"
+              isTransparentAtTop ? "text-blue-50 dark:text-white" : "text-black dark:text-white"
             )}>
               <a href="#" className="hover:text-blue-300 transition-colors">
                 <FaFacebookF size={18} />

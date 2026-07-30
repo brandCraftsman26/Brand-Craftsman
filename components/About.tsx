@@ -99,6 +99,7 @@ const About = () => {
             src="/img/bg-mask.png"
             alt="Background"
             fill
+            sizes="(max-width: 768px) 80vw, 50vw"
             className="object-cover"
           />
           {/* Blue gradient glassmorphism overlay inside the expanding box */}
