@@ -8,7 +8,7 @@ const Button = ({ id, title, rightIcon, leftIcon, containerClass, isLinkWrapper 
     <Component
       id={id}
       className={clsx(
-        "group relative z-10 w-fit cursor-pointer overflow-hidden rounded-full bg-violet-50 px-7 py-3 text-black",
+        "group relative z-10 w-fit cursor-pointer overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-orange-600 px-7 py-3 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:scale-105 transition-all duration-300",
         containerClass
       )}
     >

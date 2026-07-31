@@ -194,6 +194,41 @@ body {
   .contact-clip-path-2 {
     clip-path: polygon(29% 15%, 85% 30%, 50% 100%, 10% 64%);
   }
+
+  /* Gen-Z Trend Hypercolors & Intellio Background Mesh Models */
+  .bg-intellio-dark {
+    background-color: #080220;
+  }
+  
+  .bg-intellio-card {
+    background: rgba(18, 12, 42, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(103, 102, 255, 0.2);
+  }
+
+  .bg-hyper-gradient {
+    background: linear-gradient(135deg, #6766FF 0%, #00F0FF 50%, #FF007A 100%);
+  }
+
+  .text-hyper-gradient {
+    background: linear-gradient(135deg, #6766FF 0%, #00F0FF 50%, #FF007A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-genz {
+    @apply relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-general text-xs md:text-sm uppercase tracking-widest text-white font-bold overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95;
+    background: linear-gradient(135deg, #2563EB 0%, #EA580C 100%);
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-genz:hover {
+    box-shadow: 0 0 35px rgba(37, 99, 235, 0.8), 0 0 15px rgba(234, 88, 12, 0.6);
+  }
+
+  .btn-genz-outline {
+    @apply relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-general text-xs md:text-sm uppercase tracking-widest text-white font-bold transition-all duration-300 border border-indigo-400/40 hover:border-cyan-400 backdrop-blur-md bg-white/5 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(0,240,255,0.4)];
+  }
 }
 
 .indicator-line {

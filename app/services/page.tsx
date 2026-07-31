@@ -1,10 +1,15 @@
 import React from "react";
-import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
+import type { Metadata } from "next";
+import PageHero from "@/components/PageHero";
 import ServicesBento from "@/components/ServicesBento";
-import { FiArrowRight, FiLayers } from "react-icons/fi";
+import { FiArrowRight, FiCheckCircle } from "react-icons/fi";
 
-export const metadata = {
-  title: "Our Services | Brand Craftsman - Web Design & Digital Marketing Company in Coimbatore",
+const CTASection = dynamic(() => import("@/components/CTASection"), { ssr: true });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+
+export const metadata: Metadata = {
+  title: "Our Services | Brand Craftsman — Web Design & Digital Marketing Company in Coimbatore",
   description: "Explore our full 360-degree digital ecosystem in Coimbatore: Digital Marketing, Branding, Logo Design, Printing, Web & Mobile App Development, Press Release, Social Media & WhatsApp Marketing.",
 };
 
@@ -65,58 +70,80 @@ const serviceList = [
   }
 ];
 
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "provider": {
+    "@type": "Organization",
+    "name": "Brand Craftsman",
+    "url": "https://brandcraftsman.com"
+  },
+  "areaServed": "Coimbatore",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Digital Agency Services",
+    "itemListElement": serviceList.map((s, i) => ({
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": s.title,
+        "description": s.description
+      }
+    }))
+  }
+};
+
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-16 transition-colors duration-300">
-      
-      {/* Services Hero Header */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-10 pb-16 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 font-general text-xs uppercase tracking-widest border border-purple-500/20">
-          <FiLayers /> 360° Digital Agency Ecosystem
-        </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
 
-        <h1 className="font-zentry text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-6">
-          Our Comprehensive Services
-        </h1>
-
-        <p className="font-robert-regular text-lg sm:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          From visual identity creation to high-end software development and Search Pin powered digital marketing campaigns in Coimbatore, we build digital assets that dominate.
-        </p>
-      </section>
+      <PageHero
+        title="Comprehensive Digital Services"
+        description="From bespoke visual branding to high-speed Next.js web engineering and Search Pin performance marketing in Coimbatore."
+        primaryCta={{ label: "Start Project", href: "/contact" }}
+        secondaryCta={{ label: "View Pricing", href: "/pricing" }}
+      />
 
       {/* Services Grid Catalog */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {serviceList.map((item, idx) => (
-            <a
-              key={idx}
-              href={`/services/${item.slug}`}
-              className="group p-8 rounded-3xl bg-gray-50 dark:bg-zinc-900/60 border border-gray-200 dark:border-zinc-800 hover:border-blue-500 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <span className="text-xs font-general uppercase tracking-widest text-blue-500 dark:text-blue-400 font-bold mb-3 block">
-                  {item.category}
-                </span>
-                <h2 className="font-zentry text-2xl font-bold uppercase text-black dark:text-white mb-3 group-hover:text-blue-500 transition-colors">
-                  {item.title}
-                </h2>
-                <p className="font-robert-regular text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
-                  {item.description}
-                </p>
-              </div>
+      <section className="py-24 md:py-32 bg-slate-50 dark:bg-[#07011F] overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {serviceList.map((item, idx) => (
+              <a
+                key={idx}
+                href={`/services/${item.slug}`}
+                className="group p-8 rounded-3xl bg-white dark:bg-[#0F0927]/90 border border-slate-200 dark:border-white/10 hover:border-cyan-400/60 shadow-xl hover:shadow-[0_0_35px_rgba(0,240,255,0.2)] transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-xs font-general uppercase tracking-widest text-cyan-400 font-bold mb-3 block">
+                    {item.category}
+                  </span>
+                  <h2 className="font-zentry text-2xl font-bold uppercase text-slate-900 dark:text-white mb-3 group-hover:text-cyan-400 transition-colors">
+                    {item.title}
+                  </h2>
+                  <p className="font-robert-medium text-slate-700 dark:text-zinc-200 text-base leading-relaxed mb-6 font-medium">
+                    {item.description}
+                  </p>
+                </div>
 
-              <div className="flex items-center text-xs font-general uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-2 transition-transform">
-                Read Detailed Guide <FiArrowRight className="ml-2" />
-              </div>
-            </a>
-          ))}
+                <div className="flex items-center text-xs font-general uppercase tracking-wider text-indigo-600 dark:text-cyan-400 font-bold group-hover:translate-x-2 transition-transform">
+                  Explore Service <FiArrowRight className="ml-2" />
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Interactive Bento Visual Showcase */}
       <ServicesBento />
 
+      <CTASection />
       <Footer />
-    </div>
+    </>
   );
 }

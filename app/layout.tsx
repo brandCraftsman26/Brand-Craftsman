@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AuthProvider } from "@/context/AuthContext";
 import NavBar from "@/components/Navbar";
 import "./globals.css";
 
@@ -51,7 +52,7 @@ export default function RootLayout({
       addressCountry: "IN",
     },
     url: "https://brandcraftsman.com",
-    telephone: "+91-9876543210", // Placeholder
+    telephone: "+91-9876543210",
   };
 
   return (
@@ -67,12 +68,14 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <NavBar />
-          <main className="relative min-h-screen w-full overflow-x-hidden">
-            {children}
-          </main>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <NavBar />
+            <main className="relative min-h-screen w-full overflow-x-hidden">
+              {children}
+            </main>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

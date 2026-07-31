@@ -1,8 +1,9 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
-import { FiCheckCircle, FiStar, FiZap } from "react-icons/fi";
-
+import { FiCheckCircle, FiStar, FiZap, FiArrowRight } from "react-icons/fi";
+import Link from "next/link";
+import FAQ from "@/components/FAQ";
 interface ServiceData {
   slug: string;
   title: string;
@@ -357,11 +358,18 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-16 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-[#07011F] text-slate-900 dark:text-white pt-24 pb-16 transition-colors duration-300 overflow-hidden relative">
       
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-10 left-10 w-[500px] h-[500px] rounded-full bg-[#6766FF]/10 blur-[130px]" />
+        <div className="absolute top-40 right-10 w-[500px] h-[500px] rounded-full bg-[#FF007A]/10 blur-[130px]" />
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-[#00F0FF]/10 blur-[150px]" />
+      </div>
+
       {/* Service Hero Header */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-10 pb-16 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-general text-xs uppercase tracking-widest border border-blue-500/20">
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-16 pb-20 text-center relative z-10">
+        <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 rounded-full bg-indigo-500/10 border border-indigo-400/30 text-indigo-600 dark:text-cyan-400 font-general text-xs uppercase tracking-widest font-bold shadow-[0_0_20px_rgba(103,102,255,0.2)]">
           <FiStar className="text-yellow-400" /> {service.category}
         </div>
 
@@ -369,55 +377,62 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           {service.h1}
         </h1>
 
-        <p className="font-robert-regular text-lg sm:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+        <p className="font-robert-medium text-lg sm:text-2xl text-slate-700 dark:text-zinc-300 max-w-3xl mx-auto mb-10 leading-relaxed font-semibold">
           {service.subtitle}
         </p>
 
         <div className="flex flex-wrap justify-center gap-4">
-          <a
+          <Link
             href="/contact"
-            className="px-8 py-4 bg-yellow-400 text-black font-bold uppercase rounded-xl tracking-wider hover:bg-yellow-300 transition-all shadow-[0_0_30px_rgba(250,204,21,0.4)] text-sm sm:text-base"
+            className="btn-genz inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-orange-600 text-white font-zentry font-black text-xl uppercase rounded-xl tracking-wider hover:scale-105 transition-transform shadow-[0_0_30px_rgba(37,99,235,0.4)]"
           >
-            Inquire About {service.title}
-          </a>
+            Get a Quote <FiArrowRight />
+          </Link>
         </div>
       </section>
 
       {/* Main Service Content */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-16 border-t border-gray-200 dark:border-zinc-800">
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
-          <div className="lg:col-span-2 space-y-8">
-            <h2 className="font-zentry text-3xl sm:text-4xl font-black uppercase leading-tight text-blue-600 dark:text-blue-400">
+          <div className="lg:col-span-2 space-y-10">
+            <h2 className="font-zentry text-3xl sm:text-4xl font-black uppercase leading-tight bg-gradient-to-r from-[#6766FF] to-[#00F0FF] bg-clip-text text-transparent">
               {service.h2Intro}
             </h2>
 
-            <div className="font-robert-regular text-gray-700 dark:text-gray-300 space-y-4 text-base sm:text-lg leading-relaxed">
+            <div className="font-robert-medium text-slate-800 dark:text-zinc-200 space-y-6 text-base sm:text-lg leading-relaxed bg-white/50 dark:bg-[#0F0927]/60 p-8 rounded-3xl border border-slate-200 dark:border-white/10 backdrop-blur-md">
               {service.description.map((p, idx) => (
                 <p key={idx}>{p}</p>
               ))}
             </div>
 
             {/* Search Pin Synergy Box */}
-            <div className="bg-blue-50 dark:bg-blue-950/40 p-6 sm:p-8 rounded-3xl border border-blue-200 dark:border-blue-800 space-y-3">
-              <h3 className="font-zentry text-xl font-bold uppercase text-blue-600 dark:text-blue-400 flex items-center gap-2">
-                <FiZap /> Search Pin Synergy & Strategic Integration
+            <div className="group bg-white dark:bg-[#0F0927] p-8 rounded-3xl border border-indigo-200 dark:border-cyan-400/30 space-y-4 hover:border-cyan-400 transition-colors shadow-[0_0_30px_rgba(0,240,255,0.1)] relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
+                <FiZap className="w-24 h-24 text-cyan-400" />
+              </div>
+              <h3 className="font-zentry text-2xl font-bold uppercase text-indigo-600 dark:text-cyan-400 flex items-center gap-3 relative z-10">
+                <span className="p-2 rounded-lg bg-indigo-100 dark:bg-cyan-400/10"><FiZap /></span> 
+                Search Pin Synergy & Integration
               </h3>
-              <p className="font-robert-regular text-gray-800 dark:text-gray-200 text-sm sm:text-base leading-relaxed">
+              <p className="font-robert-medium text-slate-800 dark:text-zinc-300 text-base sm:text-lg leading-relaxed relative z-10">
                 {service.searchPinSynergy}
               </p>
             </div>
 
             {/* Step-by-Step Process */}
             <div className="pt-8">
-              <h3 className="font-zentry text-2xl sm:text-3xl font-black uppercase mb-6">
-                Our Methodical Execution Process
+              <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-600 dark:text-emerald-400 font-general text-xs uppercase tracking-widest font-bold mb-6">
+                METHODOLOGY
+              </div>
+              <h3 className="font-zentry text-2xl sm:text-4xl font-black uppercase mb-8 text-slate-900 dark:text-white">
+                Our Execution Process
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {service.process.map((p, idx) => (
-                  <div key={idx} className="p-6 bg-gray-50 dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800">
-                    <div className="font-zentry text-lg font-bold text-blue-500 uppercase mb-2">{p.step}</div>
-                    <p className="font-robert-regular text-gray-700 dark:text-gray-300 text-sm">{p.text}</p>
+                  <div key={idx} className="group p-8 bg-white dark:bg-[#0F0927]/80 rounded-3xl border border-slate-200 dark:border-white/10 hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors backdrop-blur-md">
+                    <div className="font-zentry text-2xl font-black text-indigo-500 dark:text-indigo-400 uppercase mb-3 bg-indigo-50 dark:bg-indigo-900/30 inline-block px-3 py-1 rounded-lg">{p.step}</div>
+                    <p className="font-robert-regular text-slate-700 dark:text-zinc-300 text-base leading-relaxed">{p.text}</p>
                   </div>
                 ))}
               </div>
@@ -427,28 +442,29 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
           {/* Sidebar Deliverables & Benefits */}
           <div className="space-y-8">
-            <div className="p-8 bg-gray-50 dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm space-y-6">
-              <h3 className="font-zentry text-2xl font-bold uppercase border-b border-gray-200 dark:border-zinc-800 pb-4">
+            <div className="p-8 bg-white dark:bg-[#0F0927]/90 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-md">
+              <h3 className="font-zentry text-2xl font-bold uppercase border-b border-slate-200 dark:border-white/10 pb-4 text-slate-900 dark:text-white">
                 Core Deliverables
               </h3>
-              <ul className="space-y-3 text-sm font-general">
+              <ul className="space-y-4 font-robert-medium text-base">
                 {service.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-gray-800 dark:text-gray-200">
-                    <FiCheckCircle className="text-blue-500 shrink-0 mt-0.5" />
+                  <li key={idx} className="flex items-start gap-3 text-slate-800 dark:text-zinc-200">
+                    <FiCheckCircle className="text-cyan-500 dark:text-cyan-400 shrink-0 mt-1 w-5 h-5" />
                     <span>{feat}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="p-8 bg-gradient-to-br from-blue-950 to-black text-white rounded-3xl border border-white/10 shadow-xl space-y-4">
-              <h3 className="font-zentry text-2xl font-bold uppercase text-yellow-400">
+            <div className="p-8 bg-gradient-to-br from-[#07011F] to-[#1a0f3c] text-white rounded-3xl border border-white/20 shadow-[0_0_40px_rgba(103,102,255,0.3)] space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/20 blur-[50px]" />
+              <h3 className="font-zentry text-2xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-300">
                 Key Business Advantages
               </h3>
-              <ul className="space-y-3 text-sm font-robert-regular text-gray-300">
+              <ul className="space-y-4 font-robert-medium text-zinc-200 text-base relative z-10">
                 {service.benefits.map((b, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-yellow-400 font-bold">•</span>
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="text-orange-400 font-bold text-xl leading-none">•</span>
                     <span>{b}</span>
                   </li>
                 ))}
@@ -460,19 +476,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </section>
 
       {/* Service FAQs */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-16 border-t border-gray-200 dark:border-zinc-800">
-        <h3 className="font-zentry text-3xl font-black uppercase text-center mb-8">
-          Service Questions
-        </h3>
-        <div className="max-w-4xl mx-auto space-y-4">
-          {service.faq.map((f, idx) => (
-            <div key={idx} className="p-6 bg-gray-50 dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800">
-              <h4 className="font-zentry text-lg font-bold text-blue-500 mb-2">{f.q}</h4>
-              <p className="font-robert-regular text-gray-700 dark:text-gray-300 text-sm">{f.a}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <FAQ data={service.faq.map(f => ({ question: f.q, answer: f.a }))} />
 
       <Footer />
     </div>

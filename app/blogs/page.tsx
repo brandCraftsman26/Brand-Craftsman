@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "@/components/Footer";
-import { FiBookOpen, FiArrowRight, FiClock } from "react-icons/fi";
+import { FiBookOpen } from "react-icons/fi";
+import BlogContent from "./BlogContent";
 
 export const metadata = {
   title: "Blogs & Insights | Brand Craftsman - Web Design & Digital Marketing in Coimbatore",
@@ -10,30 +11,33 @@ export const metadata = {
 const blogArticles = [
   {
     slug: "why-brands-fail-without-technical-seo-coimbatore",
-    title: "Why Beautiful Brands Fail Without Technical SEO: Insights from Coimbatore Market",
+    title: "Why Beautiful Brands Fail Without Technical SEO",
     excerpt: "Discover why high-end visual design must be backed by Search Pin technical SEO architecture to achieve top Google rankings and high ROI.",
     category: "SEO & Strategy",
     date: "July 2026",
     readTime: "5 min read",
-    author: "Hari Prashath"
+    author: "Hari Prashath",
+    featureImage: "/img/blog_seo_new.png"
   },
   {
     slug: "nextjs-vs-wordpress-web-design-coimbatore",
-    title: "Next.js vs WordPress: Choosing the Right Web Architecture for Growing Startups",
+    title: "Next.js vs WordPress: Choosing the Right Web Architecture",
     excerpt: "A deep dive comparison into performance, page load speeds, headless CMS setups, and security for modern business applications.",
     category: "Web Development",
     readTime: "7 min read",
     date: "June 2026",
-    author: "Santhosh Shanmugasundaram"
+    author: "Santhosh Shanmugasundaram",
+    featureImage: "/img/blog_nextjs_new.png"
   },
   {
     slug: "search-pin-genesis-branding-stewardship",
-    title: "From Search Pin (2024) to Brand Craftsman: The Evolution of Brand Stewardship",
+    title: "From Search Pin to Brand Craftsman: Brand Stewardship",
     excerpt: "How our journey scaling Search Pin led to building a full-spectrum digital agency for ambitious business leaders in Coimbatore.",
     category: "Agency Story",
     readTime: "6 min read",
     date: "May 2026",
-    author: "Brand Craftsman Team"
+    author: "Brand Craftsman Team",
+    featureImage: "/img/blog_story_new.png"
   }
 ];
 
@@ -58,39 +62,7 @@ export default function BlogsPage() {
 
       {/* Blog Grid */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {blogArticles.map((article, idx) => (
-            <a
-              key={idx}
-              href={`/blogs/${article.slug}`}
-              className="group p-8 rounded-3xl bg-gray-50 dark:bg-zinc-900/60 border border-gray-200 dark:border-zinc-800 hover:border-emerald-500 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between text-xs font-general text-gray-500 mb-4">
-                  <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full font-bold uppercase tracking-wider">
-                    {article.category}
-                  </span>
-                  <span className="flex items-center gap-1"><FiClock /> {article.readTime}</span>
-                </div>
-
-                <h2 className="font-zentry text-2xl font-bold uppercase text-black dark:text-white mb-3 group-hover:text-emerald-500 transition-colors leading-tight">
-                  {article.title}
-                </h2>
-
-                <p className="font-robert-regular text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
-                  {article.excerpt}
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-gray-200 dark:border-zinc-800 flex items-center justify-between">
-                <span className="text-xs font-general text-gray-500">By {article.author}</span>
-                <span className="text-xs font-general uppercase tracking-wider text-emerald-500 font-bold group-hover:translate-x-2 transition-transform flex items-center gap-1">
-                  Read Article <FiArrowRight />
-                </span>
-              </div>
-            </a>
-          ))}
-        </div>
+        <BlogContent articles={blogArticles} />
       </section>
 
       <Footer />

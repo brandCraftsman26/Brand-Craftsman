@@ -31,7 +31,7 @@ const faqs = [
   }
 ];
 
-const FAQ = () => {
+const FAQ = ({ data }: { data?: { question: string; answer: string }[] }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +53,8 @@ const FAQ = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const faqData = data || faqs;
+
   return (
     <section id="faq" className="bg-blue-50 dark:bg-zinc-900 py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto" ref={containerRef}>
@@ -66,7 +68,7 @@ const FAQ = () => {
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => {
+          {faqData.map((faq, index) => {
             const isOpen = openIndex === index;
             
             return (
