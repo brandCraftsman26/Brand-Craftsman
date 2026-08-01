@@ -118,7 +118,7 @@ const FeatureBlockItem = ({ block, index }: { block: FeatureBlock; index: number
           {/* Floating Gen-Z Badge */}
           <div className={`absolute -bottom-5 ${isLeft ? "-right-4" : "-left-4"} px-5 py-2.5 rounded-full bg-[#080220] border border-cyan-400/40 shadow-[0_0_25px_rgba(0,240,255,0.4)] backdrop-blur-xl`}>
             <span className="text-xs md:text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
-              <FiZap className="text-cyan-400 animate-pulse" /> 0{index + 1} // CREATIVE ENGINE
+              <FiZap className="text-cyan-400 animate-pulse" /> 0{index + 1} {"//"} CREATIVE ENGINE
             </span>
           </div>
         </div>

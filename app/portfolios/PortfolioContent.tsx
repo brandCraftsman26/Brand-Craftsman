@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FiTrendingUp, FiArrowRight, FiGrid } from "react-icons/fi";
+import { FiTrendingUp, FiArrowRight } from "react-icons/fi";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -75,7 +75,7 @@ export default function PortfolioContent({ projects }: { projects: Project[] }) 
             <div className="w-full h-64 relative overflow-hidden bg-zinc-950">
               <Image
                 src={project.image || "/img/portfolio_website_1785511403920.png"}
-                alt={project.title}
+                alt={`${project.title} - Web Design & Branding Portfolio in Coimbatore`}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

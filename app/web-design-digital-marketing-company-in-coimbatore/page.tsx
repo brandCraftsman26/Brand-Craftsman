@@ -1,10 +1,11 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import ServicesBento from "@/components/ServicesBento";
 import FAQ from "@/components/FAQ";
-import { FiStar, FiCheckCircle, FiPhoneCall, FiZap, FiShield, FiTrendingUp } from "react-icons/fi";
+import { FiCheckCircle, FiZap } from "react-icons/fi";
 
 const CTASection = dynamic(() => import("@/components/CTASection"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
@@ -140,9 +141,9 @@ export default function PrimaryKeywordLandingPage() {
               </ul>
 
               <div className="pt-4">
-                <a href="/contact" className="btn-genz w-full justify-center">
+                <Link href="/contact" className="btn-genz w-full justify-center">
                   Claim Free Digital Audit
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -131,21 +131,21 @@ const TestimonialSlider = () => {
                 ))}
               </div>
 
-              {/* Quote Text - High Visibility & Contrast */}
-              <p className="font-robert-medium text-slate-800 dark:text-zinc-100 leading-relaxed text-base font-medium mb-8">
+              {/* Quote Text - High Visibility & High Contrast */}
+              <p className="font-robert-medium text-slate-900 dark:text-zinc-100 leading-relaxed text-base font-semibold mb-8">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-3.5 pt-4 border-t border-slate-100 dark:border-white/10">
+              <div className="flex items-center gap-3.5 pt-4 border-t border-slate-200 dark:border-white/10">
                 <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${avatarColors[index % avatarColors.length]} flex items-center justify-center text-white text-sm font-black shadow-md`}>
                   {testimonial.avatar}
                 </div>
                 <div>
-                  <h4 className="font-robert-medium text-base font-bold text-slate-900 dark:text-white">
+                  <h4 className="font-robert-medium text-base font-extrabold text-slate-900 dark:text-white">
                     {testimonial.name}
                   </h4>
-                  <p className="font-general text-xs text-slate-600 dark:text-zinc-400 font-medium">
+                  <p className="font-general text-xs text-slate-700 dark:text-zinc-400 font-bold">
                     {testimonial.role}
                   </p>
                 </div>

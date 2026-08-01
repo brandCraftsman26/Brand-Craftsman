@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import NavBar from "@/components/Navbar";
+import Chatbot from "@/components/Chatbot";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -73,6 +74,7 @@ export default function RootLayout({
             <NavBar />
             <main className="relative min-h-screen w-full overflow-x-hidden">
               {children}
+              <Chatbot />
             </main>
           </ThemeProvider>
         </AuthProvider>

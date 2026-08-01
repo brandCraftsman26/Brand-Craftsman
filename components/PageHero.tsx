@@ -64,7 +64,7 @@ const PageHero = ({ title, description, primaryCta, secondaryCta, bgImage, child
       <div className="container mx-auto px-4 relative z-10 pointer-events-none">
         <div ref={heroRef} className="max-w-4xl mx-auto text-center pointer-events-auto">
           {/* Main Title */}
-          <h1 className="font-zentry text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-none tracking-tight mb-8 drop-shadow-lg">
+          <h1 className="font-zentry text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-none tracking-tight mb-8 drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
             {title}
           </h1>
 

@@ -79,7 +79,7 @@ const Footer = () => {
             <Link href="/" className="inline-block mb-6">
               <Image 
                 src="/img/logo-dark.png" 
-                alt="Brand Craftsman Logo" 
+                alt="Brand Craftsman - Premier Web Design & Digital Marketing Company in Coimbatore" 
                 width={200} 
                 height={40} 
                 className="w-48 h-auto" 

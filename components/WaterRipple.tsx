@@ -31,8 +31,7 @@ const WaterRipple: React.FC = () => {
     const timeoutId = setTimeout(resizeCanvas, 100);
     window.addEventListener('resize', resizeCanvas);
 
-    let lastTime = 0;
-    const animate = (time: number) => {
+    const animate = () => {
       // throttle mouse move ripples addition but animate smoothly
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       

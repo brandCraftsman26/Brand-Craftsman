@@ -1,12 +1,13 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { 
-  FiShield, FiTrendingUp, FiUsers, FiDollarSign, FiEdit3, 
-  FiCheckCircle, FiSave, FiLayers, FiBriefcase, FiMail, FiPhone, 
-  FiRefreshCw, FiPlus, FiTrash2, FiSliders, FiFileText, FiArrowLeft
+  FiShield, FiTrendingUp, FiUsers, FiDollarSign, 
+  FiCheckCircle, FiSave, FiBriefcase, FiMail, 
+  FiSliders, FiArrowLeft
 } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 
@@ -32,7 +33,7 @@ export default function AdminPage() {
     { id: 5, name: "Printing Products & Mockups", price: "₹9,999/pkg", status: "Active" },
   ]);
 
-  const [leadsData, setLeadsData] = useState([
+  const [leadsData] = useState([
     { id: 101, name: "Rajesh Kumar", service: "Web Development", phone: "+91 98421 11223", date: "2026-07-30", status: "New Inquiry" },
     { id: 102, name: "Anita Sharma", service: "Branding", phone: "+91 97890 55432", date: "2026-07-29", status: "Contacted" },
     { id: 103, name: "Siddharth V", service: "Digital Marketing", phone: "+91 94432 99881", date: "2026-07-28", status: "In Progress" },
@@ -129,7 +130,7 @@ export default function AdminPage() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
               className={`px-5 py-3 rounded-2xl font-general text-xs uppercase tracking-wider font-bold flex items-center gap-2 transition-all ${
                 activeTab === tab.id
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"

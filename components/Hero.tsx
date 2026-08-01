@@ -130,7 +130,7 @@ const Hero = () => {
               S<b>E</b>ARCH
             </div>
 
-            <h1 className="mb-8 max-w-xl font-robert-regular text-blue-100 text-lg md:text-2xl leading-relaxed drop-shadow-lg">
+            <h1 className="mb-8 max-w-xl font-robert-medium text-white text-lg sm:text-xl md:text-2xl leading-relaxed font-semibold drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
               Architecting Digital Excellence as a Masterful Web Design & Digital Marketing Company in Coimbatore.
             </h1>
 

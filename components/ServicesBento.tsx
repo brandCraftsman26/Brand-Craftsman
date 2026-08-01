@@ -1,6 +1,7 @@
 "use client";
-import Image from "next/image";
 
+import Image from "next/image";
+import Link from "next/link";
 import React, { useRef } from "react";
 import { FiMonitor, FiSmartphone, FiTrendingUp, FiPrinter, FiTv, FiMessageSquare, FiFeather, FiShare2 } from "react-icons/fi";
 import gsap from "gsap";
@@ -126,7 +127,7 @@ const services = [
 
 const BentoCard = ({ service }: { service: typeof services[0] }) => {
   return (
-    <a
+    <Link
       href={`/services/${service.slug}`}
       className={`bento-item min-h-[340px] group relative overflow-hidden rounded-3xl border border-white/15 p-7 shadow-xl transition-all duration-500 hover:scale-[1.02] hover:border-white/40 ${service.glowColor} hover:shadow-2xl ${service.className}`}
       style={{ opacity: 0, transform: "translateY(40px)" }}
@@ -134,7 +135,7 @@ const BentoCard = ({ service }: { service: typeof services[0] }) => {
       {/* 1. Relative Background Image */}
       <Image
         src={service.bgImage}
-        alt={service.title}
+        alt={`${service.title} - Web Design & Digital Marketing Company in Coimbatore`}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -186,7 +187,7 @@ const BentoCard = ({ service }: { service: typeof services[0] }) => {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

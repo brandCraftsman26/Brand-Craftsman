@@ -95,7 +95,7 @@ const FAQ = ({ data }: { data?: { question: string; answer: string }[] }) => {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="p-6 pt-0 font-robert-regular text-gray-600 dark:text-gray-400 leading-relaxed text-base md:text-lg">
+                    <p className="p-6 pt-0 font-robert-regular text-gray-800 dark:text-zinc-200 leading-relaxed text-base md:text-lg font-medium">
                       {faq.answer}
                     </p>
                   </div>

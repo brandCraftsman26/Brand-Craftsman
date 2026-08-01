@@ -51,6 +51,28 @@ body {
   color: #f4f4f5;
 }
 
+/* Inputs & Textareas – always readable */
+input, textarea, select {
+  color: #111827;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+:is(.dark) input,
+:is(.dark) textarea,
+:is(.dark) select {
+  color: #f4f4f5;
+  background-color: #18181b;
+  border-color: #3f3f46;
+}
+:is(.dark) input::placeholder,
+:is(.dark) textarea::placeholder {
+  color: #71717a;
+}
+
 @layer base {
   @font-face {
     font-family: "circular-web";
