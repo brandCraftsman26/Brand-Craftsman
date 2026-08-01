@@ -8,7 +8,8 @@ import { config } from "@/puck.config";
 import { FiArrowLeft, FiAlertCircle, FiZap, FiX } from "react-icons/fi";
 import Link from "next/link";
 
-export default function BuilderPage({ params }: { params: { pageId: string } }) {
+export default function BuilderPage({ params }: { params: Promise<{ pageId: string }> }) {
+  const [pageId, setPageId] = useState<string | null>(null);
   const [data, setData] = useState<Data | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -20,12 +21,19 @@ export default function BuilderPage({ params }: { params: { pageId: string } }) 
   const [generating, setGenerating] = useState(false);
   const [aiMode, setAiMode] = useState<"layout" | "evolve">("layout");
 
+  // Resolve params
+  useEffect(() => {
+    params.then((p) => setPageId(p.pageId));
+  }, [params]);
+
   const fetchPageData = useCallback(async () => {
+    if (!pageId) return;
     try {
-      const res = await fetch(`/api/admin/builder/pages/${params.pageId}`);
+      const res = await fetch(`/api/admin/builder/pages/${pageId}`);
       if (res.ok) {
         const page = await res.json();
-        const parsedJson = JSON.parse(page.contentJson);
+        const contentStr = page.content_json || page.contentJson;
+        const parsedJson = JSON.parse(contentStr);
         setData(parsedJson);
       } else {
         setError("Page not found or error loading page");
@@ -36,7 +44,7 @@ export default function BuilderPage({ params }: { params: { pageId: string } }) 
     } finally {
       setLoading(false);
     }
-  }, [params.pageId]);
+  }, [pageId]);
 
   useEffect(() => {
     fetchPageData();
@@ -45,7 +53,8 @@ export default function BuilderPage({ params }: { params: { pageId: string } }) 
   const handlePublish = async (puckData: Data) => {
     setSaving(true);
     try {
-      const res = await fetch(`/api/admin/builder/pages/${params.pageId}`, {
+      if (!pageId) return;
+      const res = await fetch(`/api/admin/builder/pages/${pageId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contentJson: puckData, isPublished: true }),

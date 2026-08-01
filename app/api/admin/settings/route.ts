@@ -1,22 +1,39 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { requireAdmin } from "@/lib/admin";
+import { getServerDb } from "@/lib/supabase/db";
 
 export async function GET() {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    let config = await prisma.siteConfig.findUnique({
-      where: { id: "global" },
-    });
+    const supabase = await getServerDb();
+    const { data: config, error } = await supabase
+      .from("site_config")
+      .select("*")
+      .eq("id", "global")
+      .single();
+
+    if (error && error.code !== "PGRST116") {
+      console.error("Error fetching site config:", error);
+      return NextResponse.json({ error: "Failed to fetch configuration" }, { status: 500 });
+    }
 
     if (!config) {
-      config = await prisma.siteConfig.create({
-        data: { id: "global" },
-      });
+      // Create default config
+      const { data: newConfig, error: createError } = await supabase
+        .from("site_config")
+        .insert({ id: "global" })
+        .select()
+        .single();
+
+      if (createError) {
+        console.error("Error creating site config:", createError);
+        return NextResponse.json({ error: "Failed to create configuration" }, { status: 500 });
+      }
+      return NextResponse.json(newConfig);
     }
 
     return NextResponse.json(config);
@@ -28,30 +45,31 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const data = await request.json();
-    const { siteName, headerLogoUrl, footerCopyright, socialLinks } = data;
+    const body = await request.json();
+    const { siteName, headerLogoUrl, footerCopyright, socialLinks } = body;
 
-    const config = await prisma.siteConfig.upsert({
-      where: { id: "global" },
-      update: {
-        siteName,
-        headerLogoUrl,
-        footerCopyright,
-        socialLinks: socialLinks ? JSON.stringify(socialLinks) : null,
-      },
-      create: {
+    const supabase = await getServerDb();
+    const { data: config, error } = await supabase
+      .from("site_config")
+      .upsert({
         id: "global",
-        siteName,
-        headerLogoUrl,
-        footerCopyright,
-        socialLinks: socialLinks ? JSON.stringify(socialLinks) : null,
-      },
-    });
+        site_name: siteName,
+        header_logo_url: headerLogoUrl,
+        footer_copyright: footerCopyright,
+        social_links: socialLinks ? JSON.stringify(socialLinks) : null,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating site config:", error);
+      return NextResponse.json({ error: "Failed to update configuration" }, { status: 500 });
+    }
 
     return NextResponse.json(config);
   } catch (error) {

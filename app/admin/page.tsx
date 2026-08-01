@@ -9,12 +9,16 @@ import {
   FiCheckCircle, FiSave, FiBriefcase, FiMail, 
   FiSliders, FiArrowLeft
 } from "react-icons/fi";
-import { useAuth } from "@/context/AuthContext";
+import { useUser } from "@clerk/nextjs";
+import { ADMIN_EMAILS } from "@/lib/admin-shared";
 
 export default function AdminPage() {
-  const { isLoggedIn, user, login } = useAuth();
+  const { user, isLoaded } = useUser();
   const [activeTab, setActiveTab] = useState<"overview" | "services" | "leads" | "hero" | "portfolios">("overview");
   const [saveNotification, setSaveNotification] = useState<string | null>(null);
+
+  const userEmail = user?.primaryEmailAddress?.emailAddress || "";
+  const isAdmin = isLoaded && user && ADMIN_EMAILS.includes(userEmail.toLowerCase());
 
   // Editable Site Data with LocalStorage Persistence
   const [siteConfig, setSiteConfig] = useState({
@@ -52,25 +56,30 @@ export default function AdminPage() {
     setTimeout(() => setSaveNotification(null), 3000);
   };
 
-  if (!isLoggedIn) {
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+        <div className="w-8 h-8 border-t-2 border-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4">
         <div className="max-w-md w-full p-8 rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-blue-600 to-orange-600 flex items-center justify-center mx-auto text-3xl">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-red-600 to-orange-600 flex items-center justify-center mx-auto text-3xl">
             <FiShield />
           </div>
-          <h1 className="font-zentry text-3xl font-black uppercase">Admin Authentication</h1>
+          <h1 className="font-zentry text-3xl font-black uppercase">Access Denied</h1>
           <p className="font-robert-regular text-gray-400 text-sm">
-            Sign in as an administrator to access and customize website controls, pricing, and leads.
+            Your account (<strong className="text-cyan-400">{userEmail || "unknown"}</strong>) does not have admin privileges. Only authorized administrators can access this panel.
           </p>
-          <button
-            onClick={() => login("admin@brandcraftsman.com", "Admin Craftsman")}
-            className="w-full py-4 rounded-full bg-gradient-to-r from-blue-600 to-orange-600 text-white font-general text-xs font-bold uppercase tracking-wider shadow-lg hover:scale-105 transition-all"
+          <Link 
+            href="/" 
+            className="inline-block w-full py-4 rounded-full bg-gradient-to-r from-blue-600 to-orange-600 text-white font-general text-xs font-bold uppercase tracking-wider shadow-lg hover:scale-105 transition-all"
           >
-            Authenticate as Admin
-          </button>
-          <Link href="/" className="inline-block text-xs font-general text-gray-400 hover:text-white">
-            ← Return to Main Website
+            Return to Website
           </Link>
         </div>
       </div>
@@ -99,7 +108,7 @@ export default function AdminPage() {
               Website Management Portal
             </h1>
             <p className="font-robert-regular text-gray-600 dark:text-gray-400 text-sm mt-1">
-              Logged in as <strong className="text-blue-600 dark:text-cyan-400">{user?.name}</strong> ({user?.email})
+              Logged in as <strong className="text-blue-600 dark:text-cyan-400">{user?.firstName || user?.username || 'Admin'}</strong> ({userEmail})
             </p>
           </div>
 
@@ -130,7 +139,7 @@ export default function AdminPage() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`px-5 py-3 rounded-2xl font-general text-xs uppercase tracking-wider font-bold flex items-center gap-2 transition-all ${
                 activeTab === tab.id
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
@@ -278,7 +287,7 @@ export default function AdminPage() {
                   type="text"
                   value={siteConfig.heroTitle}
                   onChange={(e) => setSiteConfig({ ...siteConfig, heroTitle: e.target.value })}
-                  className="w-full font-zentry text-xl font-bold bg-gray-100 dark:bg-zinc-800 p-3 rounded-xl border border-gray-200 dark:border-zinc-700"
+                  className="w-full font-zentry text-xl font-bold bg-gray-100 dark:bg-zinc-800 p-3 rounded-xl border border-gray-200 dark:border-zinc-700 text-slate-900 dark:text-white"
                 />
               </div>
 
@@ -288,7 +297,7 @@ export default function AdminPage() {
                   rows={3}
                   value={siteConfig.heroSubtitle}
                   onChange={(e) => setSiteConfig({ ...siteConfig, heroSubtitle: e.target.value })}
-                  className="w-full font-robert-regular text-sm bg-gray-100 dark:bg-zinc-800 p-3 rounded-xl border border-gray-200 dark:border-zinc-700"
+                  className="w-full font-robert-regular text-sm bg-gray-100 dark:bg-zinc-800 p-3 rounded-xl border border-gray-200 dark:border-zinc-700 text-slate-900 dark:text-white"
                 />
               </div>
 
@@ -298,7 +307,7 @@ export default function AdminPage() {
                   type="text"
                   value={siteConfig.phone}
                   onChange={(e) => setSiteConfig({ ...siteConfig, phone: e.target.value })}
-                  className="w-full font-mono text-sm bg-gray-100 dark:bg-zinc-800 p-3 rounded-xl border border-gray-200 dark:border-zinc-700"
+                  className="w-full font-mono text-sm bg-gray-100 dark:bg-zinc-800 p-3 rounded-xl border border-gray-200 dark:border-zinc-700 text-slate-900 dark:text-white"
                 />
               </div>
 

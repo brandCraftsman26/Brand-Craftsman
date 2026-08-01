@@ -1,37 +1,69 @@
-import { prisma } from "@/lib/prisma";
+import { getServerDb } from "@/lib/supabase/db";
 import PuckRenderer from "@/components/PuckRenderer";
-import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
 
+// Import all section components as fallback for when no builder page exists
+import Hero from "@/components/Hero";
+import ServicesBento from "@/components/ServicesBento";
+import FeaturesShowcase from "@/components/FeaturesShowcase";
+import Counters from "@/components/Counters";
+import Methodology from "@/components/Methodology";
+import TestimonialSlider from "@/components/TestimonialSlider";
+import IntegrationsBrands from "@/components/IntegrationsBrands";
+import Pricing from "@/components/Pricing";
+import FAQ from "@/components/FAQ";
+import CTASection from "@/components/CTASection";
+
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await prisma.builderPage.findFirst({
-    where: { slug: "home", isPublished: true },
-  });
+  const supabase = await getServerDb();
+  const { data: page } = await supabase
+    .from("builder_pages")
+    .select("title")
+    .eq("slug", "home")
+    .eq("is_published", true)
+    .single();
   
   if (!page) {
-    return { title: "Home" };
+    return { title: "Brand Craftsman | Premier Web Design & Digital Marketing Company in Coimbatore" };
   }
 
-  return {
-    title: page.title,
-  };
+  return { title: page.title };
 }
 
 export default async function Home() {
-  const page = await prisma.builderPage.findFirst({
-    where: { slug: "home", isPublished: true },
-  });
+  const supabase = await getServerDb();
+  const { data: page } = await supabase
+    .from("builder_pages")
+    .select("*")
+    .eq("slug", "home")
+    .eq("is_published", true)
+    .single();
 
-  if (!page) {
-    return notFound();
+  // If a published "home" page exists in the builder, render it
+  if (page) {
+    const data = JSON.parse(page.content_json);
+    return (
+      <>
+        <PuckRenderer data={data} />
+        <Footer />
+      </>
+    );
   }
 
-  const data = JSON.parse(page.contentJson);
-
+  // Fallback: render the static home page sections
   return (
     <>
-      <PuckRenderer data={data} />
+      <Hero />
+      <ServicesBento />
+      <FeaturesShowcase />
+      <Counters />
+      <Methodology />
+      <TestimonialSlider />
+      <IntegrationsBrands />
+      <Pricing />
+      <FAQ />
+      <CTASection />
       <Footer />
     </>
   );

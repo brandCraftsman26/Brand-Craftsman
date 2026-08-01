@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getServerDb } from "@/lib/supabase/db";
+import { requireAdmin } from "@/lib/admin";
 
 export async function GET() {
   try {
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const pages = [
       {
         slug: "home",
@@ -176,35 +182,21 @@ export async function GET() {
       }
     ];
 
-    const user = await prisma.user.findFirst();
-    if (!user) {
-      return NextResponse.json({ error: "No user found to attach pages to" }, { status: 400 });
-    }
+    const supabase = await getServerDb();
 
     for (const page of pages) {
-      const existing = await prisma.builderPage.findFirst({
-        where: { slug: page.slug }
-      });
-
-      if (existing) {
-        await prisma.builderPage.update({
-          where: { id: existing.id },
-          data: {
-            title: page.title,
-            contentJson: JSON.stringify(page.data)
-          }
-        });
-      } else {
-        await prisma.builderPage.create({
-          data: {
+      await supabase
+        .from("builder_pages")
+        .upsert(
+          {
+            user_id: adminId,
             title: page.title,
             slug: page.slug,
-            contentJson: JSON.stringify(page.data),
-            userId: user.id,
-            isPublished: true
-          }
-        });
-      }
+            content_json: JSON.stringify(page.data),
+            is_published: true,
+          },
+          { onConflict: "user_id,slug" }
+        );
     }
 
     return NextResponse.json({ message: "Seeded successfully", count: pages.length });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import { auth } from "@/auth"
-import { prisma } from "@/lib/prisma"
+import { requireAuth } from "@/lib/admin"
+import { getServerDb } from "@/lib/supabase/db"
 
 // OpenRouter URL for decentralized/free-tier AI routing
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -20,10 +20,10 @@ const SYSTEM_PROMPTS: Record<string, string> = {
 
 export async function POST(req: Request) {
   try {
-    const session = await auth()
+    const userId = await requireAuth()
     
     // Require authentication
-    if (!session?.user?.id) {
+    if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -33,12 +33,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing prompt or toolName" }, { status: 400 })
     }
 
-    // Check user credits
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
-    })
+    // Check user credits from Supabase
+    const supabase = await getServerDb()
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("clerk_id", userId)
+      .single()
 
-    if (!user || user.credits < 1) {
+    if (userError || !user || user.credits < 1) {
       return NextResponse.json({ error: "Insufficient credits" }, { status: 403 })
     }
 
@@ -124,22 +127,21 @@ export async function POST(req: Request) {
       generatedText = data.choices?.[0]?.message?.content || ""
     }
 
-    // Deduct credit and log generation
-    await prisma.$transaction([
-      prisma.user.update({
-        where: { id: user.id },
-        data: { credits: { decrement: 1 } }
-      }),
-      prisma.aiGeneration.create({
-        data: {
-          userId: user.id,
-          toolName,
-          prompt,
-          response: generatedText,
-          creditsUsed: 1
-        }
+    // Deduct credit and log generation in Supabase
+    await supabase
+      .from("users")
+      .update({ credits: user.credits - 1 })
+      .eq("clerk_id", userId)
+
+    await supabase
+      .from("ai_generations")
+      .insert({
+        user_id: userId,
+        tool_name: toolName,
+        prompt,
+        response: generatedText,
+        credits_used: 1
       })
-    ])
 
     return NextResponse.json({ result: generatedText })
 

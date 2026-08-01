@@ -21,7 +21,7 @@ import {
 import ThemeToggle from "./ThemeToggle";
 import Button from "./Button";
 import ContactModal from "./ContactModal";
-import { useAuth } from "@/context/AuthContext";
+import { Show, UserButton, SignInButton, SignUpButton, useUser, useAuth } from "@clerk/nextjs";
 
 /* ─────────────────────────── DATA ─────────────────────────── */
 
@@ -103,7 +103,8 @@ const NavBar = () => {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const selectedService = "";
 
-  const { isLoggedIn, user, login, logout } = useAuth();
+  const { signOut } = useAuth();
+  const { user } = useUser();
   const navContainerRef = useRef<HTMLDivElement>(null);
   const megaTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { resolvedTheme } = useTheme();
@@ -240,76 +241,49 @@ const NavBar = () => {
               </div>
 
               {/* User Auth */}
-              {isLoggedIn ? (
-                <div
-                  className="relative"
-                  onMouseEnter={() => setIsUserMenuOpen(true)}
-                  onMouseLeave={() => setIsUserMenuOpen(false)}
-                >
-                  <button
-                    className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-orange-600 p-1 pr-2.5 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all"
-                    aria-label="User Account Menu"
+              <Show when="signed-in">
+                <div className="relative">
+                  <UserButton 
+                    appearance={{
+                      elements: {
+                        userButtonAvatarBox: "h-7 w-7",
+                      }
+                    }}
                   >
-                    {user?.avatar ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={user.avatar} alt="Avatar" className="h-7 w-7 rounded-full bg-white/20" />
-                    ) : (
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
-                        <FiUser className="h-4 w-4" />
-                      </span>
-                    )}
-                    <span className="hidden sm:inline-block font-general text-[11px] truncate max-w-[80px]">
-                      {user?.name || "Craftsman"}
-                    </span>
-                    <FiChevronDown className="text-[10px]" />
-                  </button>
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="Admin Panel"
+                        labelIcon={<FiShield className="text-indigo-400" />}
+                        href="/admin"
+                      />
+                    </UserButton.MenuItems>
+                  </UserButton>
+                </div>
+              </Show>
 
-                  {/* User Dropdown */}
-                  <div className={clsx(
-                    "absolute right-0 top-full mt-2 w-52 rounded-2xl border p-2 space-y-1 shadow-2xl transition-all duration-300 origin-top-right z-[200]",
-                    "bg-white/90 dark:bg-zinc-900/90 backdrop-blur-2xl border-gray-200/60 dark:border-white/10",
-                    isUserMenuOpen ? "scale-100 opacity-100 visible" : "scale-95 opacity-0 invisible"
-                  )}>
-                    <div className="px-3 py-2 border-b border-gray-200/50 dark:border-zinc-800">
-                      <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{user?.name}</p>
-                      <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
-                    </div>
-                    <Link
-                      href="/admin"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs text-gray-700 dark:text-gray-200 hover:bg-violet-500 hover:text-white transition-colors font-general"
-                    >
-                      <FiShield className="text-indigo-400" /> Admin Panel
-                    </Link>
-                    <button
-                      onClick={() => { logout(); setIsUserMenuOpen(false); }}
-                      className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs text-rose-500 hover:bg-rose-500/10 transition-colors font-general text-left"
-                    >
-                      <FiLogOut /> Sign Out
-                    </button>
-                  </div>
-                </div>
-              ) : (
+              <Show when="signed-out">
                 <div className="hidden sm:flex items-center gap-2">
-                  <button
-                    onClick={() => login("admin@brandcraftsman.com", "Admin User")}
-                    className={clsx(
-                      "rounded-full px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all font-general flex items-center gap-1 border",
-                      isTransparentAtTop
-                        ? "text-white border-white/30 hover:bg-white/10"
-                        : "text-gray-700 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-zinc-800"
-                    )}
-                  >
-                    <FiLogIn className="text-sm" /> Sign In
-                  </button>
-                  <button
-                    onClick={() => login("client@brandcraftsman.com", "Craftsman User")}
-                    className="rounded-full bg-gradient-to-r from-blue-600 to-orange-600 px-3.5 py-1.5 text-white text-[11px] font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all font-general flex items-center gap-1"
-                  >
-                    <FiUserPlus className="text-sm" /> Sign Up
-                  </button>
+                  <SignInButton mode="modal">
+                    <button
+                      className={clsx(
+                        "rounded-full px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all font-general flex items-center gap-1 border",
+                        isTransparentAtTop
+                          ? "text-white border-white/30 hover:bg-white/10"
+                          : "text-gray-700 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-zinc-800"
+                      )}
+                    >
+                      <FiLogIn className="text-sm" /> Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button
+                      className="rounded-full bg-gradient-to-r from-blue-600 to-orange-600 px-3.5 py-1.5 text-white text-[11px] font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all font-general flex items-center gap-1"
+                    >
+                      <FiUserPlus className="text-sm" /> Sign Up
+                    </button>
+                  </SignUpButton>
                 </div>
-              )}
+              </Show>
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -596,29 +570,34 @@ const NavBar = () => {
 
           {/* Mobile Auth */}
           <div className="border-t border-gray-200 dark:border-zinc-800 p-4">
-            {isLoggedIn ? (
+            <Show when="signed-in">
               <button
-                onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+                onClick={() => { signOut(); setIsMobileMenuOpen(false); }}
                 className="w-full rounded-xl bg-rose-500/10 py-2.5 text-center text-xs font-bold uppercase text-rose-500 flex items-center justify-center gap-2"
               >
-                <FiLogOut /> Sign Out ({user?.name})
+                <FiLogOut /> Sign Out ({user?.firstName || user?.username || 'User'})
               </button>
-            ) : (
+            </Show>
+            <Show when="signed-out">
               <div className="flex gap-2">
-                <button
-                  onClick={() => { login("admin@brandcraftsman.com", "Admin"); setIsMobileMenuOpen(false); }}
-                  className="flex-1 rounded-xl bg-gray-100 dark:bg-zinc-800 py-2.5 text-center text-xs font-bold uppercase text-gray-900 dark:text-white"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => { login("client@brandcraftsman.com", "User"); setIsMobileMenuOpen(false); }}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-orange-600 py-2.5 text-center text-xs font-bold uppercase text-white"
-                >
-                  Sign Up
-                </button>
+                <SignInButton mode="modal">
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); }}
+                    className="flex-1 rounded-xl bg-gray-100 dark:bg-zinc-800 py-2.5 text-center text-xs font-bold uppercase text-gray-900 dark:text-white"
+                  >
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); }}
+                    className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-orange-600 py-2.5 text-center text-xs font-bold uppercase text-white"
+                  >
+                    Sign Up
+                  </button>
+                </SignUpButton>
               </div>
-            )}
+            </Show>
           </div>
 
           {/* Mobile Social Footer */}

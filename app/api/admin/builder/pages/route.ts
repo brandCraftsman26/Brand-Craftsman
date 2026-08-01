@@ -1,19 +1,27 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { requireAdmin } from "@/lib/admin";
+import { getServerDb } from "@/lib/supabase/db";
+import type { BuilderPage } from "@/lib/supabase/db";
 
 export async function GET() {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const pages = await prisma.builderPage.findMany({
-      orderBy: { updatedAt: "desc" },
-    });
+    const supabase = await getServerDb();
+    const { data: pages, error } = await supabase
+      .from("builder_pages")
+      .select("*")
+      .order("updated_at", { ascending: false });
 
-    return NextResponse.json(pages);
+    if (error) {
+      console.error("Error fetching pages:", error);
+      return NextResponse.json({ error: "Failed to fetch pages" }, { status: 500 });
+    }
+
+    return NextResponse.json(pages as BuilderPage[]);
   } catch (error) {
     console.error("Error fetching pages:", error);
     return NextResponse.json({ error: "Failed to fetch pages" }, { status: 500 });
@@ -22,33 +30,35 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const data = await request.json();
-    const { title, slug } = data;
+    const body = await request.json();
+    const { title, slug } = body;
 
     if (!title || !slug) {
       return NextResponse.json({ error: "Title and slug are required" }, { status: 400 });
     }
 
-    // Use a default empty Puck JSON payload for initial content
-    const defaultContentJson = JSON.stringify({
-      content: [],
-      root: {},
-    });
-
-    const newPage = await prisma.builderPage.create({
-      data: {
-        userId: session.user?.id || "",
+    const supabase = await getServerDb();
+    const { data: newPage, error } = await supabase
+      .from("builder_pages")
+      .insert({
+        user_id: adminId,
         title,
         slug,
-        contentJson: defaultContentJson,
-        isPublished: false,
-      },
-    });
+        content_json: JSON.stringify({ content: [], root: {} }),
+        is_published: false,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error creating page:", error);
+      return NextResponse.json({ error: "Failed to create page" }, { status: 500 });
+    }
 
     return NextResponse.json(newPage);
   } catch (error) {

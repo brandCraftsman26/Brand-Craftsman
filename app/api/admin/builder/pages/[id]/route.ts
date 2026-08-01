@@ -1,24 +1,27 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { requireAdmin } from "@/lib/admin";
+import { getServerDb } from "@/lib/supabase/db";
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const { id } = await params;
+    const supabase = await getServerDb();
 
-    const page = await prisma.builderPage.findUnique({
-      where: { id },
-    });
+    const { data: page, error } = await supabase
+      .from("builder_pages")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-    if (!page) {
+    if (error || !page) {
       return NextResponse.json({ error: "Page not found" }, { status: 404 });
     }
 
@@ -34,21 +37,39 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const { id } = await params;
-    const data = await request.json();
+    const body = await request.json();
+    const supabase = await getServerDb();
 
-    const updatedPage = await prisma.builderPage.update({
-      where: { id },
-      data: {
-        contentJson: JSON.stringify(data.contentJson),
-        isPublished: data.isPublished !== undefined ? data.isPublished : undefined,
-      },
-    });
+    const updateData: Record<string, unknown> = {};
+    if (body.contentJson !== undefined) {
+      updateData.content_json = typeof body.contentJson === "string"
+        ? body.contentJson
+        : JSON.stringify(body.contentJson);
+    }
+    if (body.isPublished !== undefined) {
+      updateData.is_published = body.isPublished;
+    }
+    if (body.title !== undefined) {
+      updateData.title = body.title;
+    }
+
+    const { data: updatedPage, error } = await supabase
+      .from("builder_pages")
+      .update(updateData)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating page:", error);
+      return NextResponse.json({ error: "Failed to update page" }, { status: 500 });
+    }
 
     return NextResponse.json(updatedPage);
   } catch (error) {
@@ -62,16 +83,23 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await auth();
-    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminId = await requireAdmin();
+    if (!adminId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const { id } = await params;
+    const supabase = await getServerDb();
 
-    await prisma.builderPage.delete({
-      where: { id },
-    });
+    const { error } = await supabase
+      .from("builder_pages")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting page:", error);
+      return NextResponse.json({ error: "Failed to delete page" }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

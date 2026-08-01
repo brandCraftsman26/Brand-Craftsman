@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { requireAuth } from "@/lib/admin";
 import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
-    const session = await auth();
-    if (!session || !session.user) {
+    const userId = await requireAuth();
+    if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -97,7 +97,7 @@ Do not wrap the JSON in markdown code blocks. Output ONLY raw JSON.`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "qwen/qwen-2.5-72b-instruct", // Fast and free tier available on OpenRouter
+        model: "qwen/qwen-2.5-72b-instruct",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
