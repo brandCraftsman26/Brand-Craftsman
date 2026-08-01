@@ -5,7 +5,9 @@ import { Metadata } from "next";
 
 // Import all section components as fallback for when no builder page exists
 import Hero from "@/components/Hero";
+import LogoSlider from "@/components/LogoSlider";
 import ServicesBento from "@/components/ServicesBento";
+import About from "@/components/About";
 import FeaturesShowcase from "@/components/FeaturesShowcase";
 import Counters from "@/components/Counters";
 import Methodology from "@/components/Methodology";
@@ -55,7 +57,9 @@ export default async function Home() {
   return (
     <>
       <Hero />
+      <LogoSlider />
       <ServicesBento />
+      <About />
       <FeaturesShowcase />
       <Counters />
       <Methodology />
