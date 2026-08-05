@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { CmsLogo } from "@/lib/supabase/db";
+import Image from "next/image";
 import { useRealtime } from "@/hooks/use-realtime";
 import { FiPlus, FiTrash2, FiEdit3, FiCheck, FiRefreshCw, FiImage, FiEye, FiEyeOff } from "react-icons/fi";
 import { SkeletonList } from "./Skeleton";
@@ -156,8 +157,7 @@ export default function LogosManager({ initialData }: { initialData?: CmsLogo[] 
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center p-1">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={lg.logo_url} alt={lg.name} className="max-h-full max-w-full object-contain" />
+                  <Image src={lg.logo_url} alt={lg.name} width={40} height={40} className="max-h-full max-w-full object-contain" />
                 </div>
                 <div>
                   <span className="font-zentry text-sm font-bold block">{lg.name}</span>

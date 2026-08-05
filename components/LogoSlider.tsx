@@ -3,6 +3,7 @@
 import React from "react";
 import { useRealtime } from "@/hooks/use-realtime";
 import { CmsLogo } from "@/lib/supabase/db";
+import Image from "next/image";
 
 const fallbackClients = [
   { name: "Search Pin", logo_url: "/img/logo-dark.png" },
@@ -31,8 +32,7 @@ const LogoSlider = () => {
               className="group flex items-center justify-center opacity-60 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
             >
               {"logo_url" in client && client.logo_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={client.logo_url} alt={client.name} className="h-10 md:h-12 object-contain" />
+                <Image src={client.logo_url} alt={client.name} width={200} height={48} className="h-10 md:h-12 w-auto object-contain" />
               ) : (
                 <span className="font-zentry text-3xl font-black uppercase tracking-widest text-black dark:text-white md:text-5xl">
                   {client.name}
