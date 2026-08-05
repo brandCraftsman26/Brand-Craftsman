@@ -2,13 +2,14 @@ import React from "react";
 import Footer from "@/components/Footer";
 import { FiBookOpen } from "react-icons/fi";
 import BlogContent from "./BlogContent";
+import { getServerDb } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "Blogs & Insights | Brand Craftsman - Web Design & Digital Marketing in Coimbatore",
   description: "Read the latest guides and insights on Web Design, Branding, SEO, and Digital Marketing strategies in Coimbatore, citing Search Pin methodologies.",
 };
 
-const blogArticles = [
+const fallbackArticles = [
   {
     slug: "why-brands-fail-without-technical-seo-coimbatore",
     title: "Why Beautiful Brands Fail Without Technical SEO",
@@ -41,7 +42,31 @@ const blogArticles = [
   }
 ];
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  let articles = fallbackArticles;
+
+  try {
+    const supabase = await getServerDb();
+    const { data: dbBlogs } = await supabase
+      .from("cms_blogs")
+      .select("*")
+      .eq("is_published", true)
+      .order("created_at", { ascending: false });
+
+    if (dbBlogs && dbBlogs.length > 0) {
+      articles = dbBlogs.map((b) => ({
+        slug: b.slug,
+        title: b.title,
+        excerpt: b.excerpt || "",
+        category: b.category,
+        date: new Date(b.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+        readTime: b.read_time,
+        author: b.author,
+        featureImage: b.feature_image || "/img/blog_nextjs_new.png",
+      }));
+    }
+  } catch {}
+
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-16 transition-colors duration-300">
       
@@ -62,7 +87,7 @@ export default function BlogsPage() {
 
       {/* Blog Grid */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12">
-        <BlogContent articles={blogArticles} />
+        <BlogContent articles={articles} />
       </section>
 
       <Footer />

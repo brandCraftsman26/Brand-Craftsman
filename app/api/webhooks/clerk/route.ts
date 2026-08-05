@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { isAdminEmail } from "@/lib/admin";
-import { getServerDb } from "@/lib/supabase/db";
+import { getServerDb } from "@/lib/supabase/server";
 
 interface WebhookEvent {
   type: string;

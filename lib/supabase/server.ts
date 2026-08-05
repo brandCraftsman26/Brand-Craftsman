@@ -31,3 +31,8 @@ export async function createClient() {
     }
   )
 }
+
+/** Server-side Supabase client (alias for createClient) */
+export async function getServerDb() {
+  return createClient();
+}

@@ -1,4 +1,4 @@
-import { getServerDb } from "@/lib/supabase/db";
+import { getServerDb } from "@/lib/supabase/server";
 import PuckRenderer from "@/components/PuckRenderer";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";

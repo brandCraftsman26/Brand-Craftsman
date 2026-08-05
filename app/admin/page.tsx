@@ -5,19 +5,27 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { 
   FiShield, FiTrendingUp, FiUsers, FiDollarSign, 
-  FiBriefcase, FiMail, 
-  FiSliders, FiArrowLeft, FiEdit3, FiGrid, FiLayers
+  FiBriefcase, FiMail, FiSliders, FiArrowLeft, 
+  FiEdit3, FiGrid, FiLayers, FiMessageSquare, 
+  FiImage, FiFileText, FiActivity 
 } from "react-icons/fi";
 import { useUser } from "@clerk/nextjs";
 import { ADMIN_EMAILS } from "@/lib/admin-shared";
+
 import WordsManager from "@/components/admin/WordsManager";
 import BlocksManager from "@/components/admin/BlocksManager";
 import SectionsManager from "@/components/admin/SectionsManager";
+import PortfoliosManager from "@/components/admin/PortfoliosManager";
+import ReviewsManager from "@/components/admin/ReviewsManager";
+import LogosManager from "@/components/admin/LogosManager";
+import BlogsManager from "@/components/admin/BlogsManager";
+import UsersManager from "@/components/admin/UsersManager";
+import HeatmapAnalytics from "@/components/admin/HeatmapAnalytics";
 
 export default function AdminPage() {
   const { user, isLoaded } = useUser();
   const [activeTab, setActiveTab] = useState<
-    "overview" | "words" | "blocks" | "sections" | "services" | "leads" | "portfolios"
+    "overview" | "words" | "blocks" | "sections" | "portfolios" | "reviews" | "logos" | "blogs" | "users" | "analytics"
   >("overview");
 
   const userEmail = user?.primaryEmailAddress?.emailAddress || "";
@@ -61,7 +69,7 @@ export default function AdminPage() {
         <div className="p-8 rounded-3xl bg-gradient-to-r from-blue-900/40 via-indigo-900/40 to-slate-900/40 border border-blue-500/20 backdrop-blur-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-500/20 text-cyan-400 font-general text-xs uppercase tracking-widest border border-blue-500/30 mb-3">
-              <FiShield /> Real-Time Supabase CMS Admin
+              <FiShield /> Full-Stack Supabase CMS Admin
             </div>
             <h1 className="font-zentry text-3xl md:text-5xl font-black uppercase tracking-tight">
               Website Management Portal
@@ -91,15 +99,20 @@ export default function AdminPage() {
         <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-zinc-800 pb-4">
           {[
             { id: "overview", label: "Overview", icon: <FiTrendingUp /> },
-            { id: "words", label: "CMS Words", icon: <FiEdit3 /> },
-            { id: "blocks", label: "CMS Blocks", icon: <FiGrid /> },
-            { id: "sections", label: "CMS Sections", icon: <FiLayers /> },
-            { id: "leads", label: "Client Inquiries", icon: <FiMail /> },
+            { id: "words", label: "Words", icon: <FiEdit3 /> },
+            { id: "blocks", label: "Blocks", icon: <FiGrid /> },
+            { id: "sections", label: "Sections", icon: <FiLayers /> },
+            { id: "portfolios", label: "Portfolios", icon: <FiBriefcase /> },
+            { id: "reviews", label: "Reviews", icon: <FiMessageSquare /> },
+            { id: "logos", label: "Logos", icon: <FiImage /> },
+            { id: "blogs", label: "Blogs", icon: <FiFileText /> },
+            { id: "users", label: "Users", icon: <FiUsers /> },
+            { id: "analytics", label: "Heatmap", icon: <FiActivity /> },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-5 py-3 rounded-2xl font-general text-xs uppercase tracking-wider font-bold flex items-center gap-2 transition-all ${
+              className={`px-4 py-2.5 rounded-2xl font-general text-xs uppercase tracking-wider font-bold flex items-center gap-2 transition-all ${
                 activeTab === tab.id
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
                   : "bg-white dark:bg-zinc-900 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 border border-gray-200 dark:border-zinc-800"
@@ -116,8 +129,8 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
                 { title: "Total Inquiries", value: "48 Leads", change: "+18% this month", color: "text-blue-500", icon: <FiUsers /> },
-                { title: "Active Projects", value: "12 Client Builds", change: "On Track", color: "text-emerald-500", icon: <FiBriefcase /> },
-                { title: "Monthly Revenue Run", value: "₹4.8 Lakhs", change: "+24% YoY", color: "text-amber-500", icon: <FiDollarSign /> },
+                { title: "Active Portfolios", value: "8 Projects", change: "Synced Live", color: "text-emerald-500", icon: <FiBriefcase /> },
+                { title: "Client Reviews", value: "5.0 Rating", change: "100% Positive", color: "text-amber-500", icon: <FiMessageSquare /> },
                 { title: "System Speed Index", value: "99/100 Core", change: "Ultra Fast", color: "text-cyan-500", icon: <FiTrendingUp /> },
               ].map((card, i) => (
                 <div key={i} className="p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
@@ -136,9 +149,9 @@ export default function AdminPage() {
             </div>
 
             <div className="p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 space-y-4">
-              <h3 className="font-zentry text-2xl font-black uppercase">Real-time CMS Overview</h3>
+              <h3 className="font-zentry text-2xl font-black uppercase">Real-time CMS Management Hub</h3>
               <p className="font-robert-regular text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                Welcome to your Brand Craftsman control hub. Manage <strong>CMS Words</strong> (text fields), <strong>CMS Blocks</strong> (reusable components), and <strong>CMS Sections</strong> (page layouts) in real time with instant Supabase database synchronization.
+                Manage all site resources dynamically. Add, edit, or delete <strong>Portfolios</strong>, <strong>Client Reviews</strong>, <strong>Logo Carousels</strong>, <strong>Blogs</strong>, <strong>User Roles & Credits</strong>, and monitor <strong>Heatmap Analytics</strong> in real time.
               </p>
             </div>
           </div>
@@ -153,13 +166,23 @@ export default function AdminPage() {
         {/* TAB 4: SECTIONS */}
         {activeTab === "sections" && <SectionsManager />}
 
-        {/* TAB 5: LEADS */}
-        {activeTab === "leads" && (
-          <div className="p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 space-y-6">
-            <h3 className="font-zentry text-2xl font-black uppercase">Recent Client Quote Inquiries</h3>
-            <p className="font-robert-regular text-sm text-gray-500">Live inquiries submitted via the website contact form.</p>
-          </div>
-        )}
+        {/* TAB 5: PORTFOLIOS */}
+        {activeTab === "portfolios" && <PortfoliosManager />}
+
+        {/* TAB 6: REVIEWS */}
+        {activeTab === "reviews" && <ReviewsManager />}
+
+        {/* TAB 7: LOGOS */}
+        {activeTab === "logos" && <LogosManager />}
+
+        {/* TAB 8: BLOGS */}
+        {activeTab === "blogs" && <BlogsManager />}
+
+        {/* TAB 9: USERS */}
+        {activeTab === "users" && <UsersManager />}
+
+        {/* TAB 10: HEATMAP ANALYTICS */}
+        {activeTab === "analytics" && <HeatmapAnalytics />}
       </div>
 
       <Footer />

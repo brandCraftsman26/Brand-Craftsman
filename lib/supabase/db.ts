@@ -1,5 +1,4 @@
 import { createClient as createBrowserClient } from "@/lib/supabase/client";
-import { createClient as createServerClient } from "@/lib/supabase/server";
 
 /* ─────────────────────────── Types ─────────────────────────── */
 
@@ -105,14 +104,75 @@ export interface CmsSection {
   updated_by: string | null;
 }
 
+export interface CmsPortfolio {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  image: string | null;
+  description: string | null;
+  metrics: Record<string, any>;
+  client_name: string | null;
+  tech_stack: string[];
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CmsReview {
+  id: string;
+  author: string;
+  role: string;
+  company: string | null;
+  avatar_url: string | null;
+  quote: string;
+  rating: number;
+  sort_order: number;
+  is_featured: boolean;
+  created_at: string;
+}
+
+export interface CmsLogo {
+  id: string;
+  name: string;
+  logo_url: string;
+  website_url: string | null;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface CmsBlog {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  read_time: string;
+  author: string;
+  excerpt: string | null;
+  content_json: string | null;
+  feature_image: string | null;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AnalyticsEvent {
+  id: string;
+  user_id: string | null;
+  event_type: string;
+  path: string;
+  x_pos: number | null;
+  y_pos: number | null;
+  element_tag: string | null;
+  metadata: Record<string, any>;
+  created_at: string;
+}
+
 /* ─────────────────────────── Client helpers ─────────────────────────── */
 
 /** Browser-side Supabase client (for use in client components) */
 export function getClientDb() {
   return createBrowserClient();
-}
-
-/** Server-side Supabase client (for use in API routes and server components) */
-export async function getServerDb() {
-  return createServerClient();
 }

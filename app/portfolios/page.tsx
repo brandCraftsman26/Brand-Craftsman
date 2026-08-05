@@ -2,13 +2,14 @@ import React from "react";
 import Footer from "@/components/Footer";
 import { FiBriefcase } from "react-icons/fi";
 import PortfolioContent from "./PortfolioContent";
+import { getServerDb } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "Portfolios & Case Studies | Brand Craftsman - Web Design Company in Coimbatore",
   description: "Explore our client portfolio and case studies showcasing measurable ROI: 55% B2B lead growth, 40% retail conversion uplift, and 3x customer inquiries.",
 };
 
-const portfolioProjects = [
+const fallbackProjects = [
   {
     slug: "retail-e-commerce-rebrand",
     title: "Regional Retail E-Commerce Overhaul",
@@ -44,46 +45,33 @@ const portfolioProjects = [
     metric: "10k+ Prints",
     description: "Designed high-quality modern business cards, brochures, and flyers that elevate brand presence and feel.",
     image: "/img/portfolio_printing_1785511380254.png"
-  },
-  {
-    slug: "sleek-brand-identity",
-    title: "Sleek Hypercolor Brand Identity",
-    category: "Branding Designs",
-    client: "Tech Startup",
-    metric: "Global Reach",
-    description: "Created a full branding package including stationery, logos, and digital assets using a vibrant, hypercolor aesthetic.",
-    image: "/img/portfolio_branding_1785511392412.png"
-  },
-  {
-    slug: "modern-glassmorphism-website",
-    title: "Glassmorphism SaaS Website",
-    category: "Websites",
-    client: "FinTech Enterprise",
-    metric: "2X Engagement",
-    description: "Developed a stunning modern website with a glassmorphism UI, focusing on speed, animations, and high conversions.",
-    image: "/img/portfolio_website_1785511403920.png"
-  },
-  {
-    slug: "dynamic-mobile-application",
-    title: "Dynamic Fitness Tracking App",
-    category: "Applications",
-    client: "Health Brand",
-    metric: "50k+ Downloads",
-    description: "Designed and developed a sleek, modern UI/UX mobile application for a health and fitness brand, maximizing user retention.",
-    image: "/img/portfolio_application_1785511415543.png"
-  },
-  {
-    slug: "creative-printing-mockups",
-    title: "Creative Merchandise Mockups",
-    category: "Printing Mockups",
-    client: "Lifestyle Brand",
-    metric: "High Fidelity",
-    description: "Presented premium apparel and packaging designs using modern, realistic mockups to showcase the final product quality.",
-    image: "/img/portfolio_mockups_1785511434346.png"
   }
 ];
 
-export default function PortfoliosPage() {
+export default async function PortfoliosPage() {
+  let projects = fallbackProjects;
+
+  try {
+    const supabase = await getServerDb();
+    const { data: dbPortfolios } = await supabase
+      .from("cms_portfolios")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true });
+
+    if (dbPortfolios && dbPortfolios.length > 0) {
+      projects = dbPortfolios.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        category: p.category,
+        client: p.client_name || "Client Project",
+        metric: p.metrics?.leadGrowth ? `${p.metrics.leadGrowth} Growth` : "High ROI",
+        description: p.description || "",
+        image: p.image || "/img/portfolio_website_1785511403920.png",
+      }));
+    }
+  } catch {}
+
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-16 transition-colors duration-300">
       
@@ -104,7 +92,7 @@ export default function PortfoliosPage() {
 
       {/* Projects Grid */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12">
-        <PortfolioContent projects={portfolioProjects} />
+        <PortfolioContent projects={projects} />
       </section>
 
       <Footer />

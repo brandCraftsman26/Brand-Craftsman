@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
-import { getServerDb } from "@/lib/supabase/db";
+import { getServerDb } from "@/lib/supabase/server";
 
 export async function GET() {
   try {

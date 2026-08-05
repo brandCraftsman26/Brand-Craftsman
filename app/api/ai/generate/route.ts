@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { requireAuth } from "@/lib/admin"
-import { getServerDb } from "@/lib/supabase/db"
+import { getServerDb } from "@/lib/supabase/server"
 
 // OpenRouter URL for decentralized/free-tier AI routing
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"

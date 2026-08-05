@@ -2,16 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FiStar } from "react-icons/fi";
+import { useRealtime } from "@/hooks/use-realtime";
+import { CmsReview } from "@/lib/supabase/db";
 
-interface Testimonial {
-  quote: string;
-  name: string;
-  role: string;
-  rating: number;
-  avatar: string;
-}
-
-const testimonials: Testimonial[] = [
+const fallbackTestimonials = [
   {
     quote: "Brand Craftsman transformed our online presence completely. Their strategic approach to web design and digital marketing delivered results beyond our expectations. The team is responsive and truly understands brand building.",
     name: "Rajesh Kumar",
@@ -33,27 +27,6 @@ const testimonials: Testimonial[] = [
     rating: 5,
     avatar: "AP",
   },
-  {
-    quote: "Outstanding service and incredible attention to detail. Brand Craftsman created a brand identity that perfectly captures our vision and resonates with our target audience. Highly recommended!",
-    name: "Meera Nair",
-    role: "Co-founder, GreenLeaf Organics",
-    rating: 5,
-    avatar: "MN",
-  },
-  {
-    quote: "Brand Craftsman's SEO strategy doubled our organic traffic within 6 months. Their data-driven approach and transparent reporting make them a trustworthy partner for any business looking to grow online.",
-    name: "Vikram Singh",
-    role: "COO, FastTrack Logistics",
-    rating: 5,
-    avatar: "VS",
-  },
-  {
-    quote: "The mobile app they designed for us is flawless. User feedback has been overwhelmingly positive, and our app store ratings went from 3.2 to 4.8 stars. Brand Craftsman delivers excellence consistently.",
-    name: "Deepa Menon",
-    role: "Product Head, FinServ App",
-    rating: 5,
-    avatar: "DM",
-  },
 ];
 
 const avatarColors = [
@@ -68,6 +41,17 @@ const avatarColors = [
 const TestimonialSlider = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const { data: dbReviews } = useRealtime<CmsReview>("cms_reviews");
+
+  const displayReviews = dbReviews.length > 0
+    ? dbReviews.map((r) => ({
+        quote: r.quote,
+        name: r.author,
+        role: `${r.role}${r.company ? `, ${r.company}` : ""}`,
+        rating: r.rating || 5,
+        avatar: r.author.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() || "BC",
+      }))
+    : fallbackTestimonials;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,7 +95,7 @@ const TestimonialSlider = () => {
 
         {/* Testimonial Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {testimonials.map((testimonial, index) => (
+          {displayReviews.map((testimonial, index) => (
             <div
               key={index}
               className="group relative p-8 rounded-3xl bg-white dark:bg-[#0F0927]/80 border border-slate-200 dark:border-white/10 hover:border-cyan-400/60 backdrop-blur-xl transition-all duration-500 hover:shadow-[0_0_35px_rgba(0,240,255,0.2)] hover:-translate-y-2 flex flex-col justify-between"
@@ -131,7 +115,7 @@ const TestimonialSlider = () => {
                 ))}
               </div>
 
-              {/* Quote Text - High Visibility & High Contrast */}
+              {/* Quote Text */}
               <p className="font-robert-medium text-slate-900 dark:text-zinc-100 leading-relaxed text-base font-semibold mb-8">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>

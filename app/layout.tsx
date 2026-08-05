@@ -35,6 +35,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { HeatmapTracker } from "@/components/HeatmapTracker";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -72,6 +74,7 @@ export default function RootLayout({
         <body className="min-h-full flex flex-col" suppressHydrationWarning>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <NavBar />
+            <HeatmapTracker />
             <main className="relative min-h-screen w-full overflow-x-hidden">
               {children}
               <Chatbot />
