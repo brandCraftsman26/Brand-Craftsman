@@ -16,12 +16,28 @@ export default function UserProjectsPage() {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(text);
+      } else {
+        throw new Error("Clipboard API not available");
       }
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2000);
     } catch (err) {
       console.warn("Clipboard write error:", err);
+      // Fallback
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {
+        console.error("Fallback copy failed", e);
+      }
+      document.body.removeChild(textArea);
     }
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const filtered = generations.filter(

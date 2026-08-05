@@ -53,8 +53,29 @@ export default function AIToolsPage() {
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(outputText);
+  const copyToClipboard = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(outputText);
+      } else {
+        throw new Error("Clipboard API not available");
+      }
+    } catch (err) {
+      // Fallback for when document loses focus or Clipboard API fails
+      const textArea = document.createElement("textarea");
+      textArea.value = outputText;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {
+        console.error("Fallback copy failed", e);
+      }
+      document.body.removeChild(textArea);
+    }
     alert("Copied to clipboard!");
   };
 
