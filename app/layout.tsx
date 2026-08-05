@@ -3,10 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import NavBar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
-import dynamic from "next/dynamic";
+import Chatbot from "@/components/Chatbot";
+import { HeatmapTracker } from "@/components/HeatmapTracker";
 import "./globals.css";
-
-const Chatbot = dynamic(() => import("@/components/Chatbot"), { ssr: false });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +36,6 @@ export const metadata: Metadata = {
   },
 };
 
-const HeatmapTracker = dynamic(() => import("@/components/HeatmapTracker").then(mod => mod.HeatmapTracker), { ssr: false });
 
 export default function RootLayout({
   children,
