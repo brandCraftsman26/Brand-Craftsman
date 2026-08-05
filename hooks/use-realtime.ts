@@ -13,10 +13,13 @@ export function useRealtime<T extends { id: string }>(
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Sync initialData when passed
+  // Sync initialData when passed, using JSON.stringify to avoid infinite loops
   useEffect(() => {
-    setData(initialData);
-  }, [initialData]);
+    if (initialData && initialData.length > 0) {
+      setData(initialData);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(initialData)]);
 
   useEffect(() => {
     const supabase = getClientDb();
