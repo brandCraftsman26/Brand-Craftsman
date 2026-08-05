@@ -10,7 +10,7 @@ export default function BlogsManager({ initialData }: { initialData?: CmsBlog[] 
   const { data: blogs, loading, error } = useRealtime<CmsBlog>("cms_blogs", initialData);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
-  const [editingItem, setEditingItem] = useState<Partial<CmsBlog>> | null>(null);
+  const [editingItem, setEditingItem] = useState<Partial<CmsBlog> | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const [title, setTitle] = useState("");
