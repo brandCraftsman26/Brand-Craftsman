@@ -71,6 +71,40 @@ export interface Order {
   updated_at: string;
 }
 
+export interface CmsWord {
+  id: string;
+  key: string;
+  value: string;
+  category: string;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface CmsBlock {
+  id: string;
+  type: string;
+  title: string;
+  data: Record<string, any>;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface CmsSection {
+  id: string;
+  page_slug: string;
+  section_key: string;
+  block_ids: string[];
+  config: Record<string, any>;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  updated_by: string | null;
+}
+
 /* ─────────────────────────── Client helpers ─────────────────────────── */
 
 /** Browser-side Supabase client (for use in client components) */
