@@ -12,15 +12,17 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { ADMIN_EMAILS } from "@/lib/admin-shared";
 
-import WordsManager from "@/components/admin/WordsManager";
-import BlocksManager from "@/components/admin/BlocksManager";
-import SectionsManager from "@/components/admin/SectionsManager";
-import PortfoliosManager from "@/components/admin/PortfoliosManager";
-import ReviewsManager from "@/components/admin/ReviewsManager";
-import LogosManager from "@/components/admin/LogosManager";
-import BlogsManager from "@/components/admin/BlogsManager";
-import UsersManager from "@/components/admin/UsersManager";
-import HeatmapAnalytics from "@/components/admin/HeatmapAnalytics";
+import dynamic from "next/dynamic";
+
+const WordsManager = dynamic(() => import("@/components/admin/WordsManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const BlocksManager = dynamic(() => import("@/components/admin/BlocksManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const SectionsManager = dynamic(() => import("@/components/admin/SectionsManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const PortfoliosManager = dynamic(() => import("@/components/admin/PortfoliosManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const ReviewsManager = dynamic(() => import("@/components/admin/ReviewsManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const LogosManager = dynamic(() => import("@/components/admin/LogosManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const BlogsManager = dynamic(() => import("@/components/admin/BlogsManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const UsersManager = dynamic(() => import("@/components/admin/UsersManager"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
+const HeatmapAnalytics = dynamic(() => import("@/components/admin/HeatmapAnalytics"), { loading: () => <div className="p-8 text-center text-gray-500">Loading component...</div> });
 
 export default function AdminPage() {
   const { user, isLoaded } = useUser();
