@@ -69,19 +69,32 @@ const WaterRipple: React.FC = () => {
     requestRef.current = requestAnimationFrame(animate);
 
     let lastMouseAdd = 0;
+    let cachedRect: DOMRect | null = null;
+    let lastScroll = -1;
+
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
       if (now - lastMouseAdd < 30) return; // Throttle ripple creation
+      
+      // Stop rendering ripples if we scrolled far past the hero section
+      if (window.scrollY > window.innerHeight) return;
+
       lastMouseAdd = now;
       
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      // Only recalculate rect if scroll changed to avoid layout thrashing
+      if (!cachedRect || window.scrollY !== lastScroll) {
+        cachedRect = canvas.getBoundingClientRect();
+        lastScroll = window.scrollY;
+      }
+      
+      const x = e.clientX - cachedRect.left;
+      const y = e.clientY - cachedRect.top;
       
       ripplesRef.current.push({ x, y, radius: 15, alpha: 0.3, thickness: 6 });
     };
 
     const handleClick = (e: MouseEvent) => {
+      if (window.scrollY > window.innerHeight) return;
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -89,8 +102,8 @@ const WaterRipple: React.FC = () => {
       ripplesRef.current.push({ x, y, radius: 20, alpha: 0.3, thickness: 12 });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('click', handleClick);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('click', handleClick, { passive: true });
 
     return () => {
       clearTimeout(timeoutId);

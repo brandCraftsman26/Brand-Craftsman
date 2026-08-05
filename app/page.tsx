@@ -4,18 +4,20 @@ import Footer from "@/components/Footer";
 import { Metadata } from "next";
 
 // Import all section components as fallback for when no builder page exists
-import Hero from "@/components/Hero";
-import LogoSlider from "@/components/LogoSlider";
-import ServicesBento from "@/components/ServicesBento";
-import About from "@/components/About";
-import FeaturesShowcase from "@/components/FeaturesShowcase";
-import Counters from "@/components/Counters";
-import Methodology from "@/components/Methodology";
-import TestimonialSlider from "@/components/TestimonialSlider";
-import IntegrationsBrands from "@/components/IntegrationsBrands";
-import Pricing from "@/components/Pricing";
-import FAQ from "@/components/FAQ";
-import CTASection from "@/components/CTASection";
+import dynamic from "next/dynamic";
+import Hero from "@/components/Hero"; // Hero remains statically imported for fast initial paint
+
+const LogoSlider = dynamic(() => import("@/components/LogoSlider"), { ssr: true });
+const ServicesBento = dynamic(() => import("@/components/ServicesBento"), { ssr: true });
+const About = dynamic(() => import("@/components/About"), { ssr: true });
+const FeaturesShowcase = dynamic(() => import("@/components/FeaturesShowcase"), { ssr: true });
+const Counters = dynamic(() => import("@/components/Counters"), { ssr: true });
+const Methodology = dynamic(() => import("@/components/Methodology"), { ssr: true });
+const TestimonialSlider = dynamic(() => import("@/components/TestimonialSlider"), { ssr: true });
+const IntegrationsBrands = dynamic(() => import("@/components/IntegrationsBrands"), { ssr: true });
+const Pricing = dynamic(() => import("@/components/Pricing"), { ssr: true });
+const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: true });
+const CTASection = dynamic(() => import("@/components/CTASection"), { ssr: true });
 
 export async function generateMetadata(): Promise<Metadata> {
   const supabase = await getServerDb();

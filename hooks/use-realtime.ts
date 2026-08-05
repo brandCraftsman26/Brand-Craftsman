@@ -13,13 +13,8 @@ export function useRealtime<T extends { id: string }>(
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Sync initialData when passed, using JSON.stringify to avoid infinite loops
-  useEffect(() => {
-    if (initialData && initialData.length > 0) {
-      setData(initialData);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(initialData)]);
+  // Removed initialData sync useEffect to definitively prevent infinite loops.
+  // The initial state is already set via useState, and realtime subscription handles updates.
 
   useEffect(() => {
     const supabase = getClientDb();
