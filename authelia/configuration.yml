@@ -1,0 +1,122 @@
+# =============================================================================
+# Authelia Configuration for Brand Craftsman
+# Single Sign-On (SSO) & Multi-Factor Authentication (MFA)
+# =============================================================================
+
+server:
+  host: 0.0.0.0
+  port: 9091
+
+log:
+  level: info
+
+telemetry:
+  metrics:
+    enabled: false
+
+theme: dark
+
+jwt_secret: "brand-craftsman-authelia-jwt-secret-key-at-least-32-characters-long"
+
+default_redirection_url: "http://localhost:3000"
+
+# Authentication backend (File-based local users for development & initial setup)
+authentication_backend:
+  password_reset:
+    disable: true
+  file:
+    path: /config/users_database.yml
+    watch: true
+
+# Access Control rules
+access_control:
+  default_policy: one_factor
+  rules:
+    - domain: "localhost"
+      policy: one_factor
+    - domain: "*.brandcraftsman.in"
+      policy: two_factor
+
+# Session configuration
+session:
+  name: authelia_session
+  same_site: lax
+  secret: "brand-craftsman-authelia-session-secret-must-be-very-secure-32chars"
+  expiration: 1h
+  inactivity: 15m
+  domain: localhost
+
+# Multi-Factor Authentication
+regulation:
+  max_retries: 5
+  find_time: 2m
+  ban_time: 5m
+
+storage:
+  postgres:
+    host: postgres
+    port: 5432
+    database: brand_craftsman
+    username: postgres
+    password: postgres_password
+    schema: public
+    timeout: 5s
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+# OpenID Connect 1.0 Provider for NextAuth / Auth.js
+identity_providers:
+  oidc:
+    hmac_secret: "brand-craftsman-authelia-oidc-hmac-secret-key-32-chars-long"
+    issuer_private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEowIBAAKCAQEA0Yj5l1z8z3qB3wG2v9pL9g5y1d4e2f8a1b3c4d5e6f7a8b9c
+      0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e
+      2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a
+      4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c
+      6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e
+      8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a
+      0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c
+      2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e
+      4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a
+      6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c
+      8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e
+      0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a
+      2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c
+      4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e
+      6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a
+      8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c
+      0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e
+      2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a
+      4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c
+      6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e
+      8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a
+      0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c
+      2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e
+      4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a
+      6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c
+      -----END RSA PRIVATE KEY-----
+    clients:
+      - id: "brand-craftsman"
+        description: "Brand Craftsman Next.js Agency Web Application"
+        secret: "$pbkdf2-sha512$310000$c1Gj5j2G.j5j...$sampleHashOrPlaintextSecret"
+        public: false
+        authorization_policy: one_factor
+        redirect_uris:
+          - "http://localhost:3000/api/auth/callback/authelia"
+          - "https://brandcraftsman.in/api/auth/callback/authelia"
+        scopes:
+          - openid
+          - profile
+          - email
+          - groups
+        response_types:
+          - code
+        grant_types:
+          - authorization_code
+          - refresh_token
+        response_modes:
+          - form_post
+          - query

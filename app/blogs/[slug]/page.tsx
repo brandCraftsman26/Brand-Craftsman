@@ -91,7 +91,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
           <span className="flex items-center gap-1"><FiUser /> {blog.author}</span>
         </div>
 
-        <h1 className="font-zentry text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight mb-6">
+        <h1 className="font-zentry text-3xl sm:text-5xl font-black uppercase tracking-wide leading-tight mb-6">
           {blog.title}
         </h1>
       </section>

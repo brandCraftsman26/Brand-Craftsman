@@ -9,7 +9,7 @@ const Button = ({ id, title, rightIcon, leftIcon, containerClass, onClick, isLin
       id={id}
       onClick={onClick}
       className={clsx(
-        "group relative z-10 w-fit cursor-pointer overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-orange-600 px-7 py-3 text-white shadow-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:scale-105 transition-all duration-300",
+        "group relative z-10 w-fit cursor-pointer overflow-hidden rounded-full bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 hover:from-violet-500 hover:via-indigo-500 hover:to-cyan-400 px-7 py-3 text-white shadow-lg shadow-violet-500/25 hover:shadow-cyan-500/30 hover:scale-105 transition-all duration-300",
         containerClass
       )}
     >

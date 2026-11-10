@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { FiCheckCircle, FiArrowRight, FiZap } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const TiltCard3D = dynamic(() => import("./3d/TiltCard3D"), { ssr: false });
 
 interface FeatureBlock {
   badge: string;
@@ -103,25 +106,27 @@ const FeatureBlockItem = ({ block, index }: { block: FeatureBlock; index: number
           transition: "opacity 0.8s ease, transform 0.8s ease",
         }}
       >
-        <div className={`relative aspect-[4/3] rounded-3xl bg-gradient-to-br ${block.gradient} p-[2px] shadow-[0_0_50px_rgba(103,102,255,0.25)]`}>
-          <div className="absolute inset-[2px] rounded-[22px] bg-[#07011F] dark:bg-[#080220] overflow-hidden">
-            <div className="absolute inset-0 w-full h-full">
-              <Image 
-                src={block.imageUrl}
-                alt={block.title}
-                fill
-                className="object-cover transition-transform duration-700 hover:scale-105"
-              />
+        <TiltCard3D tiltIntensity={12} glareEnabled={true} className="rounded-3xl">
+          <div className={`relative aspect-[4/3] rounded-3xl bg-gradient-to-br ${block.gradient} p-[2px] shadow-[0_0_50px_rgba(103,102,255,0.25)]`}>
+            <div className="absolute inset-[2px] rounded-[22px] bg-[#07011F] dark:bg-[#080220] overflow-hidden">
+              <div className="absolute inset-0 w-full h-full">
+                <Image 
+                  src={block.imageUrl}
+                  alt={block.title}
+                  fill
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
+
+            {/* Floating Gen-Z Badge */}
+            <div className={`absolute -bottom-5 ${isLeft ? "-right-4" : "-left-4"} px-5 py-2.5 rounded-full bg-[#080220] border border-cyan-400/40 shadow-[0_0_25px_rgba(0,240,255,0.4)] backdrop-blur-xl z-20`}>
+              <span className="text-xs md:text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                <FiZap className="text-cyan-400 animate-pulse" /> 0{index + 1} {"//"} CREATIVE ENGINE
+              </span>
             </div>
           </div>
-
-          {/* Floating Gen-Z Badge */}
-          <div className={`absolute -bottom-5 ${isLeft ? "-right-4" : "-left-4"} px-5 py-2.5 rounded-full bg-[#080220] border border-cyan-400/40 shadow-[0_0_25px_rgba(0,240,255,0.4)] backdrop-blur-xl`}>
-            <span className="text-xs md:text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
-              <FiZap className="text-cyan-400 animate-pulse" /> 0{index + 1} {"//"} CREATIVE ENGINE
-            </span>
-          </div>
-        </div>
+        </TiltCard3D>
       </div>
 
       {/* Content Side */}
@@ -140,7 +145,7 @@ const FeatureBlockItem = ({ block, index }: { block: FeatureBlock; index: number
         </div>
 
         {/* Feature Title */}
-        <h3 className="font-zentry text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white uppercase mb-5 leading-tight tracking-tight">
+        <h3 className="font-zentry text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white uppercase mb-5 leading-tight tracking-wide">
           {block.title}
         </h3>
 
@@ -192,7 +197,7 @@ const FeaturesShowcase = () => {
             CREATIVE DISRUPTION & PERFORMANCE
           </div>
 
-          <h2 className="font-zentry text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 dark:text-white uppercase leading-none tracking-tight mb-8">
+          <h2 className="font-zentry text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white uppercase leading-[1.08] tracking-wide mb-8">
             Why Choose <span className="text-hyper-gradient">Brand Craftsman</span>
           </h2>
 

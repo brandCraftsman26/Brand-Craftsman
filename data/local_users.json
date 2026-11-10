@@ -1,0 +1,30 @@
+[
+  {
+    "id": "usr_1792660646195_08mk9",
+    "username": "craftsman_client",
+    "email": "craftsman_client@example.com",
+    "display_name": "Craftsman Client",
+    "password_hash": "$2b$10$Ik3YjY.ydKNZJ5RAex8fieVSDOuPEZPwvpJ0YjcnZ/s0XFOQouuqW",
+    "role": "user",
+    "auth_provider": "credentials",
+    "groups": [
+      "user"
+    ],
+    "created_at": "2026-10-22T09:17:26.195Z",
+    "last_login_at": "2026-10-22T09:17:26.195Z"
+  },
+  {
+    "id": "usr_1792660812936_2veva",
+    "username": "info",
+    "email": "info@searchpin.in",
+    "display_name": "Sandy",
+    "password_hash": "$2b$10$LIVQiBYD0K.7Eb6ur717feoAnmxB6vJhj1txhv7xtfApildDbY65i",
+    "role": "user",
+    "auth_provider": "credentials",
+    "groups": [
+      "user"
+    ],
+    "created_at": "2026-10-22T09:20:12.936Z",
+    "last_login_at": "2026-10-22T09:20:12.936Z"
+  }
+]

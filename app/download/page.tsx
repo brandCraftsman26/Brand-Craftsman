@@ -1,156 +1,170 @@
+"use client";
+
+import React, { useState } from "react";
+import Footer from "@/components/Footer";
+import Link from "next/link";
 import dynamic from "next/dynamic";
-import type { Metadata } from "next";
-import PageHero from "@/components/PageHero";
-import { FiSmartphone, FiTablet, FiMonitor, FiDownload } from "react-icons/fi";
+import {
+  FiDownloadCloud,
+  FiFileText,
+  FiCheckCircle,
+  FiArrowRight,
+  FiPackage,
+  FiLayers,
+} from "react-icons/fi";
+import TiltCard3D from "@/components/3d/TiltCard3D";
 
-const CTASection = dynamic(() => import("@/components/CTASection"), { ssr: true });
-const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+const FloatingGeometry = dynamic(() => import("@/components/3d/FloatingGeometry"), { ssr: false });
+const PortfolioStrip = dynamic(() => import("@/components/PortfolioStrip"), { ssr: false });
 
-export const metadata: Metadata = {
-  title: "Download | Brand Craftsman — Get Our Tools On Any Device",
-  description: "Download Brand Craftsman tools and resources on any device. Access our design resources, brand kits, and productivity tools on mobile, tablet, and desktop.",
-};
-
-const downloadOptions = [
+const resources = [
   {
-    icon: <FiSmartphone className="w-10 h-10" />,
-    title: "Mobile App",
-    subtitle: "iOS & Android",
-    description: "Stay connected on the go with our mobile app for real-time project updates and collaboration.",
-    gradient: "from-blue-600 to-orange-600",
-    buttons: [
-      { label: "App Store", icon: "🍎" },
-      { label: "Google Play", icon: "▶" },
-    ],
+    title: "Agency Capabilities Deck 2026",
+    format: "PDF",
+    size: "14.2 MB",
+    description: "An exhaustive overview of Brand Craftsman's design systems, Next.js architecture, past case studies, and transparent pricing models.",
+    tag: "Corporate Deck",
+    downloadUrl: "#",
   },
   {
-    icon: <FiTablet className="w-10 h-10" />,
-    title: "Tablet Version",
-    subtitle: "iPad & Android Tablets",
-    description: "Design and review on a larger screen with our optimized tablet experience.",
-    gradient: "from-emerald-500 to-teal-500",
-    buttons: [
-      { label: "App Store", icon: "🍎" },
-      { label: "Google Play", icon: "▶" },
-    ],
+    title: "Search Pin SEO Dominance Playbook",
+    format: "PDF",
+    size: "8.6 MB",
+    description: "Our proprietary framework for dominating local and national Google rankings through algorithmic SEO and Core Web Vitals optimization.",
+    tag: "Strategy Guide",
+    downloadUrl: "#",
+  },
+  {
+    title: "Brand Craftsman Official Media Kit",
+    format: "ZIP",
+    size: "28.5 MB",
+    description: "High-resolution vector marks, dark/light logos, typography guidelines, and official brand assets for press and partner publications.",
+    tag: "Assets Kit",
+    downloadUrl: "#",
+  },
+  {
+    title: "Modern Web Architecture Blueprint",
+    format: "PDF",
+    size: "11.1 MB",
+    description: "Technical whitepaper comparing traditional CMS bloat vs. Next.js edge performance, server actions, and sub-second conversion metrics.",
+    tag: "Technical Whitepaper",
+    downloadUrl: "#",
   },
 ];
 
 export default function DownloadPage() {
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const [downloaded, setDownloaded] = useState<string | null>(null);
+
+  const handleDownload = (title: string) => {
+    setDownloading(title);
+    setTimeout(() => {
+      setDownloading(null);
+      setDownloaded(title);
+      setTimeout(() => setDownloaded(null), 3500);
+    }, 1000);
+  };
+
   return (
-    <>
-      <PageHero
-        title="Download On Any Device"
-        description="Access Brand Craftsman tools and resources on any device. Stay productive whether you're at your desk or on the move."
-        primaryCta={{ label: "Get Started Now", href: "/contact" }}
-        secondaryCta={{ label: "View Features", href: "/features" }}
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white pt-24 pb-0 transition-colors duration-300">
+      {/* Hero with 3D Canvas */}
+      <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-10 pb-16 text-center overflow-hidden">
+        <FloatingGeometry scene="download" className="opacity-50 dark:opacity-75" />
+
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-general text-xs uppercase tracking-widest border border-cyan-500/20 backdrop-blur-md">
+            <FiDownloadCloud /> Resource Center
+          </div>
+
+          <h1 className="font-zentry text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-wide leading-[1.08] mb-6">
+            Downloads & Agency Resources
+          </h1>
+
+          <p className="font-robert-regular text-lg sm:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            Access our latest capability presentations, technical blueprints, brand asset kits, and Search Pin SEO methodologies.
+          </p>
+        </div>
+      </section>
+
+      {/* Resource Cards Grid with 3D Tilt */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12 border-t border-zinc-100 dark:border-zinc-900">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {resources.map((res, idx) => (
+            <TiltCard3D key={idx} tiltIntensity={10} className="h-full rounded-3xl">
+              <div className="p-8 h-full rounded-3xl bg-zinc-50/80 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between hover:border-cyan-500/40 transition-all duration-300 group hover:shadow-2xl">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
+                      {res.tag}
+                    </span>
+                    <span className="text-xs font-semibold text-gray-400 font-general">
+                      {res.format} • {res.size}
+                    </span>
+                  </div>
+
+                  <h3 className="font-zentry text-2xl font-bold uppercase mb-3 text-gray-900 dark:text-white">
+                    {res.title}
+                  </h3>
+
+                  <p className="font-robert-regular text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                    {res.description}
+                  </p>
+                </div>
+
+                <div className="border-t border-zinc-200/80 dark:border-zinc-800/80 pt-4 flex items-center justify-between">
+                  <button
+                    onClick={() => handleDownload(res.title)}
+                    disabled={downloading === res.title}
+                    className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-200 shadow-md shadow-violet-500/20 disabled:opacity-50 cursor-pointer"
+                  >
+                    <FiDownloadCloud className="w-4 h-4" />
+                    <span>
+                      {downloading === res.title
+                        ? "Packaging File..."
+                        : downloaded === res.title
+                        ? "Download Started!"
+                        : "Download Asset"}
+                    </span>
+                  </button>
+
+                  {downloaded === res.title && (
+                    <span className="text-xs text-emerald-500 font-semibold flex items-center gap-1">
+                      <FiCheckCircle /> Verified
+                    </span>
+                  )}
+                </div>
+              </div>
+            </TiltCard3D>
+          ))}
+        </div>
+      </section>
+
+      {/* Production Portfolios Ready For Inspection */}
+      <PortfolioStrip
+        title="Production Portfolios Ready For Inspection"
+        subtitle="See our architectural blueprints brought to life in real client websites with live iframe previews."
+        maxItems={8}
       />
 
-      {/* Apps for all devices */}
-      <section className="py-20 md:py-28 bg-blue-50 dark:bg-[#09090b]">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 font-general text-xs uppercase tracking-wider mb-4">
-              <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
-              Multi-Platform
-            </span>
-            <h2 className="font-zentry text-3xl md:text-4xl lg:text-5xl font-black text-black dark:text-white uppercase">
-              Apps For All Your Devices
-            </h2>
-          </div>
-
-          {/* Mobile & Tablet cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
-            {downloadOptions.map((option, index) => (
-              <div
-                key={index}
-                className="group relative rounded-3xl bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/5 p-8 md:p-10 overflow-hidden hover:shadow-xl hover:shadow-violet-500/5 hover:-translate-y-2 transition-all duration-500"
-              >
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br opacity-5 blur-3xl" />
-                
-                {/* Device mockup */}
-                <div className={`relative w-full aspect-[16/10] rounded-2xl bg-gradient-to-br ${option.gradient} p-[2px] mb-8 shadow-lg group-hover:shadow-xl transition-shadow`}>
-                  <div className="absolute inset-[2px] rounded-[14px] bg-white dark:bg-[#1a1a2e] overflow-hidden flex items-center justify-center">
-                    <div className="text-gray-300 dark:text-white/20">
-                      {option.icon}
-                    </div>
-                  </div>
-                </div>
-
-                <span className={`inline-block px-3 py-1 rounded-full bg-gradient-to-r ${option.gradient} text-white font-general text-xs uppercase tracking-wider mb-3`}>
-                  {option.subtitle}
-                </span>
-                <h3 className="font-zentry text-xl md:text-2xl font-black text-black dark:text-white uppercase mb-3">
-                  {option.title}
-                </h3>
-                <p className="font-robert-regular text-gray-600 dark:text-gray-400 leading-relaxed text-sm mb-6">
-                  {option.description}
-                </p>
-
-                <div className="flex gap-3">
-                  {option.buttons.map((btn, i) => (
-                    <a
-                      key={i}
-                      href="#"
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gray-100 dark:bg-white/[0.05] border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white/80 font-general text-xs uppercase tracking-wider hover:bg-violet-500 hover:text-white hover:border-violet-500 transition-all duration-300"
-                    >
-                      <span>{btn.icon}</span>
-                      {btn.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Desktop card (full width) */}
-          <div className="max-w-5xl mx-auto">
-            <div className="group relative rounded-3xl bg-gradient-to-r from-[#1a0533] to-[#2d1b69] p-8 md:p-12 overflow-hidden hover:shadow-2xl hover:shadow-violet-500/20 transition-all duration-500">
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full bg-violet-500/10 blur-[100px]" />
-              </div>
-
-              <div className="relative flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-                <div className="w-full lg:w-1/2">
-                  <div className="relative aspect-[16/10] rounded-2xl bg-white/[0.06] border border-white/[0.08] overflow-hidden flex items-center justify-center">
-                    <FiMonitor className="w-20 h-20 text-white/20" />
-                  </div>
-                </div>
-                <div className="w-full lg:w-1/2">
-                  <span className="inline-block px-3 py-1 rounded-full bg-violet-500/20 text-violet-300 font-general text-xs uppercase tracking-wider mb-3">
-                    Desktop
-                  </span>
-                  <h3 className="font-zentry text-2xl md:text-3xl font-black text-white uppercase mb-3">
-                    Desktop Version
-                  </h3>
-                  <p className="font-robert-regular text-white/60 leading-relaxed text-sm mb-6">
-                    Full-featured desktop application with advanced design tools, real-time collaboration, and seamless integration with your existing workflow.
-                  </p>
-                  <div className="flex gap-3">
-                    <a
-                      href="#"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-[#1a0533] font-general text-xs uppercase tracking-wider hover:shadow-lg hover:scale-105 transition-all duration-300"
-                    >
-                      <FiDownload className="w-4 h-4" />
-                      Download for Mac
-                    </a>
-                    <a
-                      href="#"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white font-general text-xs uppercase tracking-wider hover:bg-white/10 transition-all duration-300"
-                    >
-                      <FiDownload className="w-4 h-4" />
-                      Windows
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Custom Briefing CTA */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-16 border-t border-zinc-100 dark:border-zinc-900">
+        <div className="p-8 md:p-12 rounded-3xl bg-zinc-900 text-white border border-zinc-800 text-center max-w-3xl mx-auto space-y-4">
+          <h2 className="font-zentry text-3xl font-black uppercase">Need A Tailored Executive Briefing?</h2>
+          <p className="text-zinc-400 text-sm leading-relaxed font-robert-regular">
+            If your leadership team requires a customized architecture proposal or competitive audit for your specific market, our senior strategist will prepare it for you.
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm transition-all shadow-lg shadow-violet-500/25"
+            >
+              Request Custom Proposal <FiArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      <CTASection />
       <Footer />
-    </>
+    </div>
   );
 }

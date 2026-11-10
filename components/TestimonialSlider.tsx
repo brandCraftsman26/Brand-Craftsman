@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FiStar } from "react-icons/fi";
-import { useRealtime } from "@/hooks/use-realtime";
-import { CmsReview } from "@/lib/supabase/db";
 
 const fallbackTestimonials = [
   {
@@ -41,17 +39,6 @@ const avatarColors = [
 const TestimonialSlider = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const { data: dbReviews } = useRealtime<CmsReview>("cms_reviews");
-
-  const displayReviews = dbReviews.length > 0
-    ? dbReviews.map((r) => ({
-        quote: r.quote,
-        name: r.author,
-        role: `${r.role}${r.company ? `, ${r.company}` : ""}`,
-        rating: r.rating || 5,
-        avatar: r.author.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() || "BC",
-      }))
-    : fallbackTestimonials;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -95,7 +82,7 @@ const TestimonialSlider = () => {
 
         {/* Testimonial Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {displayReviews.map((testimonial, index) => (
+          {fallbackTestimonials.map((testimonial, index) => (
             <div
               key={index}
               className="group relative p-8 rounded-3xl bg-white dark:bg-[#0F0927]/80 border border-slate-200 dark:border-white/10 hover:border-cyan-400/60 backdrop-blur-xl transition-all duration-500 hover:shadow-[0_0_35px_rgba(0,240,255,0.2)] hover:-translate-y-2 flex flex-col justify-between"

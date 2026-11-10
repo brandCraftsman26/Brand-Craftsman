@@ -12,16 +12,14 @@ import { useTheme } from "next-themes";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import {
   FiChevronDown, FiMenu, FiX, FiHome, FiInfo, FiBriefcase, FiImage,
-  FiFileText, FiPhone, FiShield, FiLogOut, FiLogIn, FiUserPlus,
-  FiUser, FiDollarSign, FiZap, FiEdit3, FiPenTool, FiPrinter,
+  FiFileText, FiPhone, FiEdit3, FiPenTool, FiPrinter,
   FiTrendingUp, FiCode, FiSmartphone, FiSend, FiMessageCircle,
-  FiType, FiCopy, FiVideo, FiSearch, FiFeather, FiCheckCircle,
-  FiArrowRight, FiGlobe, FiLayers, FiMonitor
+  FiFeather, FiArrowRight, FiGlobe, FiLayers, FiMonitor
 } from "react-icons/fi";
 import ThemeToggle from "./ThemeToggle";
 import Button from "./Button";
 import ContactModal from "./ContactModal";
-import { Show, UserButton, SignInButton, SignUpButton, useUser, useAuth } from "@clerk/nextjs";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 /* ─────────────────────────── DATA ─────────────────────────── */
 
@@ -43,13 +41,13 @@ const serviceCategories = [
     items: [
       { name: "Web Development", slug: "web-development", icon: <FiMonitor />, desc: "Modern web apps" },
       { name: "Mobile App Dev", slug: "mobile-app-development", icon: <FiSmartphone />, desc: "iOS & Android" },
-      { name: "AI Website Builder", slug: "ai-website-builder", icon: <FiLayers />, desc: "Build with AI" },
+      { name: "Custom Web Solutions", slug: "web-development", icon: <FiLayers />, desc: "High-performance apps" },
     ],
   },
   {
     title: "Marketing",
     icon: <FiTrendingUp />,
-    color: "from-orange-500 to-rose-500",
+    color: "from-fuchsia-500 to-pink-500",
     items: [
       { name: "Digital Marketing", slug: "digital-marketing", icon: <FiGlobe />, desc: "Grow online" },
       { name: "Social Media", slug: "social-media-marketing", icon: <FiMessageCircle />, desc: "Build engagement" },
@@ -60,23 +58,11 @@ const serviceCategories = [
   },
 ];
 
-const aiTools = [
-  { name: "AI Content Writer", href: "/dashboard/ai-tools", icon: <FiType />, desc: "Generate quality content", badge: "Popular" },
-  { name: "Grammar Checker", href: "/dashboard/ai-tools", icon: <FiCheckCircle />, desc: "Fix grammar instantly" },
-  { name: "Plagiarism Checker", href: "/dashboard/ai-tools", icon: <FiSearch />, desc: "Ensure originality" },
-  { name: "AI Bypass Tool", href: "/dashboard/ai-tools", icon: <FiZap />, desc: "Humanize AI text", badge: "New" },
-  { name: "AI Image Generator", href: "/dashboard/ai-tools", icon: <FiImage />, desc: "Create stunning visuals" },
-  { name: "Video Generator", href: "/dashboard/ai-tools", icon: <FiVideo />, desc: "AI-powered videos", badge: "Beta" },
-  { name: "AI Copywriter", href: "/dashboard/ai-tools", icon: <FiCopy />, desc: "Marketing copy" },
-];
-
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Services", href: "/services", hasMega: "services" as const },
-  { name: "AI Tools", href: "/dashboard/ai-tools", hasMega: "tools" as const },
   { name: "Portfolios", href: "/portfolios" },
-  { name: "Pricing", href: "/pricing" },
   { name: "Blog", href: "/blogs" },
   { name: "Contact", href: "/contact" },
 ];
@@ -85,26 +71,21 @@ const mobileLinks = [
   { name: "Home", href: "/", icon: <FiHome /> },
   { name: "About", href: "/about", icon: <FiInfo /> },
   { name: "Services", href: "/services", icon: <FiBriefcase />, hasSub: true },
-  { name: "AI Tools", href: "/dashboard/ai-tools", icon: <FiZap />, hasSub: true },
   { name: "Portfolios", href: "/portfolios", icon: <FiImage /> },
-  { name: "Pricing", href: "/pricing", icon: <FiDollarSign /> },
   { name: "Blog", href: "/blogs", icon: <FiFileText /> },
   { name: "Contact", href: "/contact", icon: <FiPhone /> },
-  { name: "Admin Panel", href: "/admin", icon: <FiShield /> },
 ];
 
 /* ─────────────────────────── COMPONENT ─────────────────────────── */
 
 const NavBar = () => {
-  const [activeMega, setActiveMega] = useState<"services" | "tools" | null>(null);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user, loading: authLoading, logout } = useAuth();
+  const [activeMega, setActiveMega] = useState<"services" | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const selectedService = "";
 
-  const { signOut } = useAuth();
-  const { user } = useUser();
   const navContainerRef = useRef<HTMLDivElement>(null);
   const megaTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { resolvedTheme } = useTheme();
@@ -115,7 +96,7 @@ const NavBar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  const hasDarkHero = !pathname.startsWith("/admin") && !pathname.startsWith("/dashboard") && !pathname.startsWith("/login") && !pathname.startsWith("/signup");
+  const hasDarkHero = true; // All public pages have dark hero
   const isAtTop = !mounted || currentScrollY === 0;
   const isTransparentAtTop = hasDarkHero && isAtTop;
 
@@ -151,7 +132,7 @@ const NavBar = () => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  const handleMegaEnter = useCallback((menu: "services" | "tools") => {
+  const handleMegaEnter = useCallback((menu: "services") => {
     if (megaTimeoutRef.current) clearTimeout(megaTimeoutRef.current);
     setActiveMega(menu);
   }, []);
@@ -240,50 +221,60 @@ const NavBar = () => {
                 />
               </div>
 
-              {/* User Auth */}
-              <Show when="signed-in">
-                <div className="relative">
-                  <UserButton 
-                    appearance={{
-                      elements: {
-                        userButtonAvatarBox: "h-7 w-7",
-                      }
-                    }}
-                  >
-                    <UserButton.MenuItems>
-                      <UserButton.Link
-                        label="Admin Panel"
-                        labelIcon={<FiShield className="text-indigo-400" />}
-                        href="/admin"
+              {/* Auth.js Authentication State */}
+              {authLoading ? (
+                <div className="w-8 h-8 rounded-full bg-slate-800 animate-pulse hidden sm:block" />
+              ) : user ? (
+                <div className="relative group">
+                  <button className="flex items-center gap-2 p-1 rounded-full bg-slate-800/80 border border-slate-700 hover:border-indigo-500 transition-colors">
+                    {user.photoURL ? (
+                      <Image
+                        src={user.photoURL}
+                        alt={user.displayName || "User Avatar"}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full object-cover"
                       />
-                    </UserButton.MenuItems>
-                  </UserButton>
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-bold text-xs flex items-center justify-center">
+                        {(user.displayName || user.email || "U").slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                  </button>
+                  <div className="absolute right-0 top-full mt-2 w-48 py-2 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="px-4 py-2 border-b border-slate-800">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-bold text-white truncate">{user.displayName || "User"}</p>
+                        <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                          {user.role === "admin" ? "Admin" : "Verified"}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="w-full text-left px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 font-semibold transition-colors cursor-pointer"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
                 </div>
-              </Show>
-
-              <Show when="signed-out">
+              ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <SignInButton mode="modal">
-                    <button
-                      className={clsx(
-                        "rounded-full px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all font-general flex items-center gap-1 border",
-                        isTransparentAtTop
-                          ? "text-white border-white/30 hover:bg-white/10"
-                          : "text-gray-700 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-zinc-800"
-                      )}
-                    >
-                      <FiLogIn className="text-sm" /> Sign In
-                    </button>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <button
-                      className="rounded-full bg-gradient-to-r from-blue-600 to-orange-600 px-3.5 py-1.5 text-white text-[11px] font-bold uppercase tracking-wider shadow-md hover:scale-105 transition-all font-general flex items-center gap-1"
-                    >
-                      <FiUserPlus className="text-sm" /> Sign Up
-                    </button>
-                  </SignUpButton>
+                  <Link
+                    href="/login"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-sm"
+                  >
+                    Sign Up
+                  </Link>
                 </div>
-              </Show>
+              )}
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -331,7 +322,7 @@ const NavBar = () => {
                       <div className="space-y-1">
                         {cat.items.map((item) => (
                           <Link
-                            key={item.slug}
+                            key={`${cat.title}-${item.name}`}
                             href={`/services/${item.slug}`}
                             className="group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 hover:bg-white/10"
                           >
@@ -374,85 +365,6 @@ const NavBar = () => {
               </div>
             </div>
           </div>
-
-          {/* ═══════════════ MEGA MENU: AI TOOLS ═══════════════ */}
-          <div
-            className={clsx(
-              "absolute left-0 top-full w-full overflow-hidden transition-all duration-300 ease-out z-[200]",
-              activeMega === "tools"
-                ? "max-h-[550px] opacity-100 visible"
-                : "max-h-0 opacity-0 invisible"
-            )}
-            onMouseEnter={() => handleMegaEnter("tools")}
-            onMouseLeave={handleMegaLeave}
-          >
-            <div className="border-t border-b bg-[#0C0621]/95 dark:bg-zinc-950/98 backdrop-blur-3xl border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.7)]">
-              <div className="mx-auto max-w-[1440px] px-6 py-8">
-                <div className="mb-5 flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-md">
-                    <FiZap className="text-lg" />
-                  </span>
-                  <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider font-general text-white">
-                      AI-Powered Tools
-                    </h3>
-                    <p className="text-xs text-zinc-300">
-                      Supercharge your workflow with our on-demand AI suite
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-x-8 gap-y-1 md:grid-cols-4">
-                  {aiTools.map((tool) => (
-                    <Link
-                      key={tool.name}
-                      href={tool.href}
-                      className="group flex items-center gap-3 rounded-xl px-3 py-3 transition-all duration-200 hover:bg-white/10"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg bg-white/10 text-white group-hover:bg-white/20 group-hover:scale-110 transition-all">
-                        {tool.icon}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm font-semibold font-general text-white group-hover:text-cyan-300 transition-colors truncate">
-                            {tool.name}
-                          </p>
-                          {tool.badge && (
-                            <span className={clsx(
-                              "shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider",
-                              tool.badge === "New" ? "bg-emerald-500/30 text-emerald-300 border border-emerald-400/30" :
-                              tool.badge === "Popular" ? "bg-amber-500/30 text-amber-300 border border-amber-400/30" :
-                              "bg-blue-500/30 text-blue-300 border border-blue-400/30"
-                            )}>
-                              {tool.badge}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-zinc-300 truncate">
-                          {tool.desc}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Tools CTA */}
-                <div className="mt-6 flex items-center justify-between rounded-2xl px-6 py-4 bg-gradient-to-r from-violet-600/30 to-indigo-600/30 border border-violet-400/30 backdrop-blur-md">
-                  <div>
-                    <p className="text-sm font-bold font-general text-white">
-                      Get unlimited access to all AI tools
-                    </p>
-                    <p className="text-xs text-zinc-300">
-                      Starting at just ₹999/month — 7-day free trial included.
-                    </p>
-                  </div>
-                  <Link href="/pricing" onClick={() => setActiveMega(null)}>
-                    <Button id="mega-pricing" title="View Plans" containerClass="!py-2 !px-5 !text-[11px]" isLinkWrapper />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
         </header>
       </div>
 
@@ -475,7 +387,7 @@ const NavBar = () => {
         )}>
 
           {/* Mobile Header */}
-          <div className="relative bg-gradient-to-r from-blue-600 to-orange-600 px-5 py-5 flex justify-between items-center">
+          <div className="relative bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 px-5 py-5 flex justify-between items-center">
             <Image
               src="/img/logo-light.png"
               alt="Brand Craftsman"
@@ -524,27 +436,13 @@ const NavBar = () => {
                       <div className="bg-gray-50/50 dark:bg-zinc-900/50 py-2 px-3">
                         {item.name === "Services" && serviceCategories.flatMap(c => c.items).map((sub) => (
                           <Link
-                            key={sub.slug}
+                            key={`${sub.name}-${sub.slug}`}
                             href={`/services/${sub.slug}`}
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-violet-500 hover:text-white transition-colors font-general"
                           >
                             <span className="text-violet-500">{sub.icon}</span>
                             {sub.name}
-                          </Link>
-                        ))}
-                        {item.name === "AI Tools" && aiTools.map((tool) => (
-                          <Link
-                            key={tool.name}
-                            href={tool.href}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-violet-500 hover:text-white transition-colors font-general"
-                          >
-                            <span className="text-violet-500">{tool.icon}</span>
-                            {tool.name}
-                            {tool.badge && (
-                              <span className="ml-auto rounded-full bg-violet-500/15 px-1.5 py-0.5 text-[9px] font-bold text-violet-500">{tool.badge}</span>
-                            )}
                           </Link>
                         ))}
                       </div>
@@ -568,36 +466,14 @@ const NavBar = () => {
             ))}
           </div>
 
-          {/* Mobile Auth */}
+          {/* Mobile CTA */}
           <div className="border-t border-gray-200 dark:border-zinc-800 p-4">
-            <Show when="signed-in">
-              <button
-                onClick={() => { signOut(); setIsMobileMenuOpen(false); }}
-                className="w-full rounded-xl bg-rose-500/10 py-2.5 text-center text-xs font-bold uppercase text-rose-500 flex items-center justify-center gap-2"
-              >
-                <FiLogOut /> Sign Out ({user?.firstName || user?.username || 'User'})
-              </button>
-            </Show>
-            <Show when="signed-out">
-              <div className="flex gap-2">
-                <SignInButton mode="modal">
-                  <button
-                    onClick={() => { setIsMobileMenuOpen(false); }}
-                    className="flex-1 rounded-xl bg-gray-100 dark:bg-zinc-800 py-2.5 text-center text-xs font-bold uppercase text-gray-900 dark:text-white"
-                  >
-                    Sign In
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button
-                    onClick={() => { setIsMobileMenuOpen(false); }}
-                    className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-orange-600 py-2.5 text-center text-xs font-bold uppercase text-white"
-                  >
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </div>
-            </Show>
+            <button
+              onClick={() => { setIsMobileMenuOpen(false); setIsModalOpen(true); }}
+              className="w-full rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 py-3 text-center text-xs font-bold uppercase text-white tracking-wider shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all cursor-pointer"
+            >
+              Get a Free Quote
+            </button>
           </div>
 
           {/* Mobile Social Footer */}

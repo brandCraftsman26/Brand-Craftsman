@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRealtime } from "@/hooks/use-realtime";
-import { CmsLogo } from "@/lib/supabase/db";
 import Image from "next/image";
 
 const fallbackClients = [
@@ -14,10 +12,7 @@ const fallbackClients = [
 ];
 
 const LogoSlider = () => {
-  const { data: dbLogos } = useRealtime<CmsLogo>("cms_logos");
-
-  const displayLogos = dbLogos.length > 0 ? dbLogos : fallbackClients;
-  const marqueeClients = [...displayLogos, ...displayLogos, ...displayLogos];
+  const marqueeClients = [...fallbackClients, ...fallbackClients, ...fallbackClients];
 
   return (
     <section className="relative w-full overflow-hidden bg-white py-12 dark:bg-zinc-950">
@@ -31,7 +26,7 @@ const LogoSlider = () => {
               key={idx} 
               className="group flex items-center justify-center opacity-60 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
             >
-              {"logo_url" in client && client.logo_url ? (
+              {client.logo_url ? (
                 <Image src={client.logo_url} alt={client.name} width={200} height={48} className="h-10 md:h-12 w-auto object-contain" />
               ) : (
                 <span className="font-zentry text-3xl font-black uppercase tracking-widest text-black dark:text-white md:text-5xl">

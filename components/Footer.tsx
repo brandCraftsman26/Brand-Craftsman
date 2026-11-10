@@ -9,7 +9,7 @@ import { FiArrowRight, FiShield, FiClock, FiHeadphones } from "react-icons/fi";
 const footerLinks = {
   Product: [
     { name: "Features", href: "/features" },
-    { name: "Pricing", href: "/pricing" },
+    { name: "Portfolio", href: "/portfolios" },
     { name: "Integrations", href: "/features" },
     { name: "Testimonials", href: "/testimonials" },
     { name: "Download", href: "/download" },
@@ -111,7 +111,7 @@ const Footer = () => {
                 />
                 <button
                   type="submit"
-                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-orange-600 text-white hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300"
+                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 text-white hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 cursor-pointer"
                 >
                   <FiArrowRight className="w-5 h-5" />
                 </button>

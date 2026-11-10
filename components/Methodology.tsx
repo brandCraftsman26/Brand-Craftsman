@@ -34,8 +34,8 @@ const steps = [
     title: "Launch & Scale",
     description: "We handle the deployment smoothly. But launch day is just the beginning. Through our partnership with Search Pin, we immediately pivot to scaling your brand through aggressive digital marketing and continuous technical support.",
     icon: <FiTrendingUp className="text-2xl" />,
-    color: "#f97316", // orange-500
-    shadow: "0 0 25px rgba(249,115,22,0.6)"
+    color: "#06b6d4", // cyan-500
+    shadow: "0 0 25px rgba(6,182,212,0.6)"
   }
 ];
 

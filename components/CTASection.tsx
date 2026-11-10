@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { FiArrowRight, FiZap } from "react-icons/fi";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const FloatingGeometry = dynamic(() => import("./3d/FloatingGeometry"), { ssr: false });
 
 const CTASection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -24,6 +27,9 @@ const CTASection = () => {
 
   return (
     <section ref={sectionRef} className="relative py-24 md:py-36 bg-[#080220] overflow-hidden border-b border-white/10">
+      {/* 3D Floating Geometry Scene */}
+      <FloatingGeometry scene="hero" className="opacity-50 pointer-events-none" />
+
       {/* Intellio Mesh Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-[#6766FF]/20 blur-[160px] animate-pulse" />
@@ -46,7 +52,7 @@ const CTASection = () => {
               READY TO SCALE YOUR BRAND?
             </div>
 
-            <h2 className="font-zentry text-4xl sm:text-5xl md:text-6xl font-black text-white uppercase leading-tight mb-6 tracking-tight">
+            <h2 className="font-zentry text-4xl sm:text-5xl md:text-6xl font-black text-white uppercase leading-[1.1] mb-6 tracking-wide">
               Start Building Your <span className="text-hyper-gradient">Dream Brand</span> Today
             </h2>
 
@@ -65,10 +71,10 @@ const CTASection = () => {
                 <FiArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
               </Link>
               <Link
-                href="/pricing"
+                href="/portfolios"
                 className="btn-genz-outline"
               >
-                View Pricing
+                View Portfolios
               </Link>
             </div>
           </div>

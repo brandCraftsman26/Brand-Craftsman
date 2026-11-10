@@ -97,7 +97,7 @@ const Counters = () => {
             transition: "opacity 0.6s ease, transform 0.6s ease",
           }}
         >
-          <h3 className="font-zentry text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight">
+          <h3 className="font-zentry text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-wide">
             Trusted by <span className="text-hyper-gradient">Brands</span> Worldwide
           </h3>
         </div>

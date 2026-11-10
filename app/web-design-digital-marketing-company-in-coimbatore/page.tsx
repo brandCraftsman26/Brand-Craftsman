@@ -9,6 +9,7 @@ import { FiCheckCircle, FiZap } from "react-icons/fi";
 
 const CTASection = dynamic(() => import("@/components/CTASection"), { ssr: true });
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+const PortfolioStrip = dynamic(() => import("@/components/PortfolioStrip"));
 
 export const metadata: Metadata = {
   title: "Web Design & Digital Marketing Company in Coimbatore | Brand Craftsman",
@@ -103,7 +104,7 @@ export default function PrimaryKeywordLandingPage() {
                 <FiZap /> MARKET LEADERSHIP IN COIMBATORE
               </div>
 
-              <h2 className="font-zentry text-3xl sm:text-5xl font-black uppercase leading-tight text-slate-900 dark:text-white">
+              <h2 className="font-zentry text-3xl sm:text-5xl font-black uppercase tracking-wide leading-tight text-slate-900 dark:text-white">
                 Why Brand Craftsman is the #1 Web Design & Digital Marketing Company in Coimbatore
               </h2>
 
@@ -122,7 +123,7 @@ export default function PrimaryKeywordLandingPage() {
             </div>
 
             <div className="bg-white dark:bg-[#0F0927] p-8 sm:p-10 rounded-3xl border border-slate-200 dark:border-white/10 shadow-[0_0_50px_rgba(103,102,255,0.25)] space-y-6">
-              <h3 className="font-zentry text-2xl sm:text-3xl font-black uppercase text-slate-900 dark:text-white">
+              <h3 className="font-zentry text-2xl sm:text-3xl font-black uppercase tracking-wide text-slate-900 dark:text-white">
                 What Sets Our Agency Apart?
               </h3>
               <ul className="space-y-4 font-robert-medium text-slate-800 dark:text-zinc-200 text-base font-semibold">
@@ -152,6 +153,13 @@ export default function PrimaryKeywordLandingPage() {
 
       {/* Interactive Bento Visual Showcase */}
       <ServicesBento />
+
+      {/* Live Client Portfolios Showcase */}
+      <PortfolioStrip
+        title="Live Coimbatore & Global Client Portfolios"
+        subtitle="Browse production platforms engineered by Brand Craftsman — test live in desktop and mobile viewports."
+        maxItems={8}
+      />
 
       <FAQ />
       <CTASection />

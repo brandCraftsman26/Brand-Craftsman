@@ -15,7 +15,7 @@ export default function NotFound() {
           404
         </h1>
 
-        <h2 className="font-zentry text-2xl md:text-3xl font-black text-white uppercase mb-4">
+        <h2 className="font-zentry text-2xl md:text-3xl font-black text-white uppercase tracking-wide mb-4">
           Page Not Found
         </h2>
 
@@ -26,7 +26,7 @@ export default function NotFound() {
         <div className="flex flex-wrap justify-center gap-4">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-orange-600 text-white font-general text-sm uppercase tracking-wider rounded-full hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] hover:scale-105 transition-all duration-300"
+            className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 text-white font-general text-sm uppercase tracking-wider rounded-full hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] hover:scale-105 transition-all duration-300"
           >
             <FiHome className="w-4 h-4" />
             Back To Home

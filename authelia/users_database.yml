@@ -1,0 +1,27 @@
+# =============================================================================
+# Authelia File-based User Database (Development & Testing)
+# =============================================================================
+
+users:
+  admin:
+    displayname: "Brand Craftsman Administrator"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$sj7p91sM3Q/qN4G5V2/3mA$E1xQ88l/JzQ00N2N2v6uX+sD4eE9W9e8uF1wE3y9o7Q" # password: password123
+    email: "admin@brandcraftsman.in"
+    groups:
+      - admin
+      - devops
+
+  santhosh:
+    displayname: "Santhosh Shanmugasundaram"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$sj7p91sM3Q/qN4G5V2/3mA$E1xQ88l/JzQ00N2N2v6uX+sD4eE9W9e8uF1wE3y9o7Q" # password: password123
+    email: "santhosh@brandcraftsman.in"
+    groups:
+      - admin
+      - branding
+
+  client:
+    displayname: "Sample Client"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$sj7p91sM3Q/qN4G5V2/3mA$E1xQ88l/JzQ00N2N2v6uX+sD4eE9W9e8uF1wE3y9o7Q" # password: password123
+    email: "client@brandcraftsman.in"
+    groups:
+      - user

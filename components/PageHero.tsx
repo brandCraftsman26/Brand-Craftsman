@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiArrowRight } from "react-icons/fi";
 import WaterRipple from "./WaterRipple";
+import FloatingGeometry from "./3d/FloatingGeometry";
 
 interface PageHeroProps {
   title: string;
@@ -59,12 +60,15 @@ const PageHero = ({ title, description, primaryCta, secondaryCta, bgImage, child
             backgroundSize: "48px 48px",
           }}
         />
+
+        {/* 3D Floating Canvas */}
+        <FloatingGeometry scene="hero" className="opacity-40" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10 pointer-events-none">
         <div ref={heroRef} className="max-w-4xl mx-auto text-center pointer-events-auto">
           {/* Main Title */}
-          <h1 className="font-zentry text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-none tracking-tight mb-8 drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
+          <h1 className="font-zentry text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-[1.08] tracking-wide mb-8 drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
             {title}
           </h1>
 
